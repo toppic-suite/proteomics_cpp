@@ -1,0 +1,326 @@
+xercesc/internal/ReaderMgr.lo: xercesc/internal/ReaderMgr.cpp \
+ xercesc/util/BinMemInputStream.hpp xercesc/util/BinInputStream.hpp \
+ xercesc/util/XMemory.hpp xercesc/util/XercesDefs.hpp \
+ xercesc/util/Xerces_autoconf_config.hpp \
+ c:/mingw64/x86_64-w64-mingw32/include/inttypes.h \
+ c:/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
+ c:/mingw64/x86_64-w64-mingw32/include/_mingw.h \
+ c:/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
+ c:/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
+ c:/mingw64/x86_64-w64-mingw32/include/vadefs.h \
+ c:/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_directx.h \
+ c:/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
+ c:/mingw64/lib/gcc/x86_64-w64-mingw32/4.8.2/include/stdint.h \
+ c:/mingw64/x86_64-w64-mingw32/include/stdint.h \
+ c:/mingw64/lib/gcc/x86_64-w64-mingw32/4.8.2/include/stddef.h \
+ c:/mingw64/x86_64-w64-mingw32/include/stddef.h \
+ c:/mingw64/x86_64-w64-mingw32/include/_mingw_print_push.h \
+ c:/mingw64/x86_64-w64-mingw32/include/_mingw_print_pop.h \
+ c:/mingw64/x86_64-w64-mingw32/include/sys/types.h \
+ c:/mingw64/x86_64-w64-mingw32/include/_mingw_off_t.h \
+ c:/mingw64/x86_64-w64-mingw32/include/wchar.h \
+ c:/mingw64/x86_64-w64-mingw32/include/_mingw_stat64.h \
+ c:/mingw64/x86_64-w64-mingw32/include/swprintf.inl \
+ c:/mingw64/x86_64-w64-mingw32/include/sec_api/wchar_s.h \
+ xercesc/util/XercesVersion.hpp \
+ c:/mingw64/x86_64-w64-mingw32/include/stdlib.h \
+ c:/mingw64/lib/gcc/x86_64-w64-mingw32/4.8.2/include-fixed/limits.h \
+ c:/mingw64/lib/gcc/x86_64-w64-mingw32/4.8.2/include-fixed/syslimits.h \
+ c:/mingw64/x86_64-w64-mingw32/include/limits.h \
+ c:/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
+ c:/mingw64/x86_64-w64-mingw32/include/malloc.h \
+ xercesc/util/PlatformUtils.hpp xercesc/util/XMLException.hpp \
+ xercesc/util/XMLExceptMsgs.hpp xercesc/dom/DOMError.hpp \
+ xercesc/util/XMLUni.hpp xercesc/framework/XMLErrorReporter.hpp \
+ xercesc/util/PanicHandler.hpp xercesc/util/XMLFileMgr.hpp \
+ xercesc/util/XMLMutexMgr.hpp xercesc/util/Janitor.hpp \
+ xercesc/framework/MemoryManager.hpp xercesc/util/Janitor.c \
+ xercesc/util/RuntimeException.hpp \
+ xercesc/util/UnexpectedEOFException.hpp xercesc/util/XMLURL.hpp \
+ xercesc/util/XMLUniDefs.hpp xercesc/util/XMLUri.hpp \
+ xercesc/util/XMLString.hpp xercesc/util/BaseRefVectorOf.hpp \
+ xercesc/util/ArrayIndexOutOfBoundsException.hpp \
+ xercesc/util/XMLEnumerator.hpp xercesc/util/BaseRefVectorOf.c \
+ xercesc/framework/XMLBuffer.hpp \
+ c:/mingw64/x86_64-w64-mingw32/include/string.h \
+ c:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
+ c:/mingw64/x86_64-w64-mingw32/include/assert.h \
+ xercesc/internal/XSerializable.hpp xercesc/internal/XSerializeEngine.hpp \
+ xercesc/util/RefHashTableOf.hpp xercesc/util/Hashers.hpp \
+ xercesc/util/IllegalArgumentException.hpp \
+ xercesc/util/NoSuchElementException.hpp xercesc/util/RefHashTableOf.c \
+ xercesc/util/NullPointerException.hpp \
+ c:/mingw64/x86_64-w64-mingw32/include/c++/new \
+ c:/mingw64/x86_64-w64-mingw32/include/c++/x86_64-w64-mingw32/bits/c++config.h \
+ c:/mingw64/x86_64-w64-mingw32/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
+ c:/mingw64/x86_64-w64-mingw32/include/c++/x86_64-w64-mingw32/bits/cpu_defines.h \
+ c:/mingw64/x86_64-w64-mingw32/include/c++/exception \
+ c:/mingw64/x86_64-w64-mingw32/include/c++/bits/atomic_lockfree_defines.h \
+ xercesc/util/ValueVectorOf.hpp xercesc/util/ValueVectorOf.c \
+ xercesc/internal/XSerializationException.hpp \
+ xercesc/internal/XProtoType.hpp xercesc/sax/InputSource.hpp \
+ xercesc/framework/LocalFileInputSource.hpp \
+ xercesc/framework/URLInputSource.hpp \
+ xercesc/framework/XMLDocumentHandler.hpp xercesc/util/RefVectorOf.hpp \
+ xercesc/util/RefVectorOf.c xercesc/framework/XMLAttr.hpp \
+ xercesc/util/QName.hpp xercesc/framework/XMLAttDef.hpp \
+ xercesc/validators/datatype/DatatypeValidator.hpp \
+ xercesc/util/KVStringPair.hpp xercesc/util/regx/RegularExpression.hpp \
+ xercesc/util/RefArrayVectorOf.hpp xercesc/util/RefArrayVectorOf.c \
+ xercesc/util/regx/Op.hpp xercesc/util/regx/TokenFactory.hpp \
+ xercesc/util/regx/Token.hpp xercesc/util/Mutexes.hpp \
+ xercesc/util/regx/BMPattern.hpp xercesc/util/regx/OpFactory.hpp \
+ xercesc/util/regx/RegxUtil.hpp \
+ xercesc/validators/schema/SchemaSymbols.hpp \
+ xercesc/framework/psvi/XSSimpleTypeDefinition.hpp \
+ xercesc/framework/psvi/XSTypeDefinition.hpp \
+ xercesc/framework/psvi/XSObject.hpp \
+ xercesc/framework/psvi/XSConstants.hpp \
+ xercesc/framework/ValidationContext.hpp xercesc/util/NameIdPool.hpp \
+ xercesc/util/NameIdPool.c xercesc/framework/XMLEntityDecl.hpp \
+ xercesc/framework/XMLEntityHandler.hpp \
+ xercesc/internal/EndOfEntityException.hpp xercesc/internal/ReaderMgr.hpp \
+ xercesc/internal/XMLReader.hpp xercesc/util/XMLChar.hpp \
+ xercesc/framework/XMLRecognizer.hpp \
+ xercesc/util/TranscodingException.hpp xercesc/util/RefStackOf.hpp \
+ xercesc/util/EmptyStackException.hpp xercesc/util/RefStackOf.c \
+ xercesc/sax/Locator.hpp xercesc/util/OutOfMemoryException.hpp \
+ xercesc/util/XMLResourceIdentifier.hpp
+
+xercesc/util/BinMemInputStream.hpp:
+
+xercesc/util/BinInputStream.hpp:
+
+xercesc/util/XMemory.hpp:
+
+xercesc/util/XercesDefs.hpp:
+
+xercesc/util/Xerces_autoconf_config.hpp:
+
+c:/mingw64/x86_64-w64-mingw32/include/inttypes.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/crtdefs.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/_mingw.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/vadefs.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_directx.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h:
+
+c:/mingw64/lib/gcc/x86_64-w64-mingw32/4.8.2/include/stdint.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/stdint.h:
+
+c:/mingw64/lib/gcc/x86_64-w64-mingw32/4.8.2/include/stddef.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/stddef.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/_mingw_print_push.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/_mingw_print_pop.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/sys/types.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/_mingw_off_t.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/wchar.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/_mingw_stat64.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/swprintf.inl:
+
+c:/mingw64/x86_64-w64-mingw32/include/sec_api/wchar_s.h:
+
+xercesc/util/XercesVersion.hpp:
+
+c:/mingw64/x86_64-w64-mingw32/include/stdlib.h:
+
+c:/mingw64/lib/gcc/x86_64-w64-mingw32/4.8.2/include-fixed/limits.h:
+
+c:/mingw64/lib/gcc/x86_64-w64-mingw32/4.8.2/include-fixed/syslimits.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/limits.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/malloc.h:
+
+xercesc/util/PlatformUtils.hpp:
+
+xercesc/util/XMLException.hpp:
+
+xercesc/util/XMLExceptMsgs.hpp:
+
+xercesc/dom/DOMError.hpp:
+
+xercesc/util/XMLUni.hpp:
+
+xercesc/framework/XMLErrorReporter.hpp:
+
+xercesc/util/PanicHandler.hpp:
+
+xercesc/util/XMLFileMgr.hpp:
+
+xercesc/util/XMLMutexMgr.hpp:
+
+xercesc/util/Janitor.hpp:
+
+xercesc/framework/MemoryManager.hpp:
+
+xercesc/util/Janitor.c:
+
+xercesc/util/RuntimeException.hpp:
+
+xercesc/util/UnexpectedEOFException.hpp:
+
+xercesc/util/XMLURL.hpp:
+
+xercesc/util/XMLUniDefs.hpp:
+
+xercesc/util/XMLUri.hpp:
+
+xercesc/util/XMLString.hpp:
+
+xercesc/util/BaseRefVectorOf.hpp:
+
+xercesc/util/ArrayIndexOutOfBoundsException.hpp:
+
+xercesc/util/XMLEnumerator.hpp:
+
+xercesc/util/BaseRefVectorOf.c:
+
+xercesc/framework/XMLBuffer.hpp:
+
+c:/mingw64/x86_64-w64-mingw32/include/string.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/assert.h:
+
+xercesc/internal/XSerializable.hpp:
+
+xercesc/internal/XSerializeEngine.hpp:
+
+xercesc/util/RefHashTableOf.hpp:
+
+xercesc/util/Hashers.hpp:
+
+xercesc/util/IllegalArgumentException.hpp:
+
+xercesc/util/NoSuchElementException.hpp:
+
+xercesc/util/RefHashTableOf.c:
+
+xercesc/util/NullPointerException.hpp:
+
+c:/mingw64/x86_64-w64-mingw32/include/c++/new:
+
+c:/mingw64/x86_64-w64-mingw32/include/c++/x86_64-w64-mingw32/bits/c++config.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/c++/x86_64-w64-mingw32/bits/os_defines.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/c++/x86_64-w64-mingw32/bits/cpu_defines.h:
+
+c:/mingw64/x86_64-w64-mingw32/include/c++/exception:
+
+c:/mingw64/x86_64-w64-mingw32/include/c++/bits/atomic_lockfree_defines.h:
+
+xercesc/util/ValueVectorOf.hpp:
+
+xercesc/util/ValueVectorOf.c:
+
+xercesc/internal/XSerializationException.hpp:
+
+xercesc/internal/XProtoType.hpp:
+
+xercesc/sax/InputSource.hpp:
+
+xercesc/framework/LocalFileInputSource.hpp:
+
+xercesc/framework/URLInputSource.hpp:
+
+xercesc/framework/XMLDocumentHandler.hpp:
+
+xercesc/util/RefVectorOf.hpp:
+
+xercesc/util/RefVectorOf.c:
+
+xercesc/framework/XMLAttr.hpp:
+
+xercesc/util/QName.hpp:
+
+xercesc/framework/XMLAttDef.hpp:
+
+xercesc/validators/datatype/DatatypeValidator.hpp:
+
+xercesc/util/KVStringPair.hpp:
+
+xercesc/util/regx/RegularExpression.hpp:
+
+xercesc/util/RefArrayVectorOf.hpp:
+
+xercesc/util/RefArrayVectorOf.c:
+
+xercesc/util/regx/Op.hpp:
+
+xercesc/util/regx/TokenFactory.hpp:
+
+xercesc/util/regx/Token.hpp:
+
+xercesc/util/Mutexes.hpp:
+
+xercesc/util/regx/BMPattern.hpp:
+
+xercesc/util/regx/OpFactory.hpp:
+
+xercesc/util/regx/RegxUtil.hpp:
+
+xercesc/validators/schema/SchemaSymbols.hpp:
+
+xercesc/framework/psvi/XSSimpleTypeDefinition.hpp:
+
+xercesc/framework/psvi/XSTypeDefinition.hpp:
+
+xercesc/framework/psvi/XSObject.hpp:
+
+xercesc/framework/psvi/XSConstants.hpp:
+
+xercesc/framework/ValidationContext.hpp:
+
+xercesc/util/NameIdPool.hpp:
+
+xercesc/util/NameIdPool.c:
+
+xercesc/framework/XMLEntityDecl.hpp:
+
+xercesc/framework/XMLEntityHandler.hpp:
+
+xercesc/internal/EndOfEntityException.hpp:
+
+xercesc/internal/ReaderMgr.hpp:
+
+xercesc/internal/XMLReader.hpp:
+
+xercesc/util/XMLChar.hpp:
+
+xercesc/framework/XMLRecognizer.hpp:
+
+xercesc/util/TranscodingException.hpp:
+
+xercesc/util/RefStackOf.hpp:
+
+xercesc/util/EmptyStackException.hpp:
+
+xercesc/util/RefStackOf.c:
+
+xercesc/sax/Locator.hpp:
+
+xercesc/util/OutOfMemoryException.hpp:
+
+xercesc/util/XMLResourceIdentifier.hpp:
