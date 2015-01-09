@@ -87,7 +87,12 @@ public class TopPC extends Thread {
 	public void interrupt() {
 		if (p != null) {
 			p.destroy();
-
+			try {
+				Runtime.getRuntime().exec("Taskkill /IM toppic.exe /F");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
