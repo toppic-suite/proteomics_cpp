@@ -50,11 +50,11 @@
 				}
 			}
 
-			if (document.getElementById('table').checked) {
+			if (!document.getElementById('table').checked) {
 				if (document.getElementById('ppm').value != 15
 						&& document.getElementById('ppm').value != 10
 						&& document.getElementById('ppm').value != 5) {
-					alert("Error tolerance can only be 15, 10 or 5 when using fast e-value estimation!");
+					alert("Error tolerance can only be 15, 10 or 5 when not using generating function!");
 					return;
 				}
 			}
