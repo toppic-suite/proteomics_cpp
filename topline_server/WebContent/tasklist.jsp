@@ -1,136 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	import="java.io.*" import="java.util.*" import="edu.iupui.toppc.util.*"
-	import="java.text.DecimalFormat" pageEncoding="ISO-8859-1"%>
+	import="java.io.*" import="java.util.*"
+	import="edu.iupui.toppic.task.*" import="java.text.DecimalFormat"
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 	String servpath = request.getContextPath();
 	String basePath = request.getScheme() + "://"
-	+ request.getServerName() + ":" + request.getServerPort()
-	+ servpath + "/";
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ servpath + "/";
 %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<link rel="stylesheet" href="<%=basePath%>css/bootstrap.min.css">
-<script src="<%=basePath%>js/jquery.min.js"></script>
-<script src="<%=basePath%>js/bootstrap.min.js"></script>
-<script type="text/javascript">
-	function deleteTask(id) {
-		var arr = "Do you want to delete Task " + id + " ?";
-
-		if (confirm(arr)) {
-			document.getElementById('delName').value = id;
-			document.getElementById(id).style.display = "none";
-			document.getElementById('deleteFrm').submit();
-		}
-	}
-
-	function stopTask(id) {
-		var arr = "Do you want to stop Task " + id + " ?";
-
-		if (confirm(arr)) {
-			document.getElementById('stopName').value = id;
-			document.getElementById('stopFrm').submit();
-			htmlobj = $.ajax({
-				url : "TaskInfoServlet?id=" + id,
-				async : false
-			});
-
-			var arr = htmlobj.responseText.split(',');
-			var per = arr[0];
-			var status = arr[1];
-			var runtime = arr[2];
-			document.getElementById("runtime" + id).innerHTML = runtime;
-			document.getElementById("progress" + id).innerHTML = per
-					+ "%(stopped)";
-
-			document.getElementById("BTN" + id).innerHTML = "<button type='button' class='btn btn-success btn-xs' onclick=downloadTask('"
-					+ id
-					+ "')>&nbsp;&nbsp;Download&nbsp;&nbsp;</button>&nbsp;"
-					+ "<button type='button' class='btn btn-warning btn-xs' onclick=deleteTask('"
-					+ id + "')>&nbsp;&nbsp;Delete&nbsp;&nbsp;</button>";
-
-		}
-	}
-
-	function refreshRow(id) {
-
-		htmlobj = $.ajax({
-			url : "TaskInfoServlet?id=" + id,
-			async : false
-		});
-
-		var arr = htmlobj.responseText.split(',');
-		var per = arr[0];
-		var status = arr[1];
-		var runtime = arr[2];
-
-		if (status == "running") {
-			document.getElementById("runtime" + id).innerHTML = runtime;
-			document.getElementById("progress" + id).innerHTML = per
-					+ "% (running)";
-			document.getElementById("BTN" + id).innerHTML = "<button type='button' id='BtnRefresh"
-					+ id
-					+ "' class='btn btn-success btn-xs' onclick=refreshRow('"
-					+ id
-					+ "')>&nbsp;&nbsp;&nbsp;Refresh&nbsp;&nbsp;&nbsp;</button>&nbsp;"
-					+ "<button type='button' id ='BtnStop"
-					+ id
-					+ "' class='btn btn-warning btn-xs' onclick=stopTask('"
-					+ id
-					+ "')>&nbsp;&nbsp;&nbsp;Stop&nbsp;&nbsp;&nbsp;</button></td></tr>";
-		} else if (status == "finished") {
-			document.getElementById("runtime" + id).innerHTML = runtime;
-			document.getElementById("progress" + id).innerHTML = "100%(finished)";
-			document.getElementById("BTN" + id).innerHTML = "<button type='button' class='btn btn-success btn-xs' onclick=downloadTask('"
-					+ id
-					+ "')>&nbsp;&nbsp;Download&nbsp;&nbsp;</button>&nbsp;"
-					+ "<button type='button' class='btn btn-warning btn-xs' onclick=deleteTask('"
-					+ id
-					+ "')>&nbsp;&nbsp;Delete&nbsp;&nbsp;</button></td></tr>";
-		}
-
-	}
-
-	function downloadTask(id) {
-
-		document.getElementById("downloadFrm").src = "./download.jsp?id=" + id;
-
-		$("#downloadModal").modal({
-			show : true
-		});
-	}
-
-	function zipped() {
-		document.getElementById("zipping").innerHTML = "&nbsp;&nbsp;";
-	}
-</script>
-
-<style type="text/css">
-.table th {
-	text-align: center;
-}
-
-.modal-dialog {
-	position: relative;
-	width: auto;
-	margin: 0px;
-}
-
-#downloadModal {
-	top: 100px;
-	width: 500px;
-	height: 370px;
-	overflow: hidden;
-	margin: 0 auto;
-}
-</style>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/result.css">
 
 </head>
 <body>
 	<iframe name="hiddenFr" class="hide"></iframe>
-	<table class="table table-striped" style="width: 820px;">
+	<table class="table table-striped" style="width: 815px;">
 		<thead>
 
 			<tr>
@@ -149,9 +38,8 @@
 				ArrayList<Task> taskList = TaskList.getTask(getServletContext()
 						.getRealPath("")
 						+ File.separator
-						+ "log"
-						+ File.separator
-						+ "tasklist.xml");
+						+ "tasks"
+						+ File.separator + "tasklist.xml");
 				DecimalFormat df = new DecimalFormat("#.##");
 
 				if (taskList.size() > 0) {
@@ -284,19 +172,10 @@
 			</div>
 		</div>
 	</div>
-	<script
-		src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="js/vendor/jquery.ui.widget.js"></script>
-	<script src="js/tmpl.min.js"></script>
-	<script src="js/load-image.all.min.js"></script>
-	<script src="js/canvas-to-blob.min.js"></script>
+	<script src="js/jquery-1.9.1.js"></script>
+	<script src="js/jquery-ui.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.blueimp-gallery.min.js"></script>
-	<script src="js/jquery.iframe-transport.js"></script>
-	<script src="js/jquery.fileupload.js"></script>
-	<script src="js/jquery.fileupload-fp.js"></script>
-	<script src="js/jquery.fileupload-ui.js"></script>
-	<script src="js/locale.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/toppic-results.js"></script>
+
 </body>
 </html>

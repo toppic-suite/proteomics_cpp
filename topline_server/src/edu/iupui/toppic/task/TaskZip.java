@@ -1,4 +1,4 @@
-package edu.iupui.toppc.util;
+package edu.iupui.toppic.task;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class Zip {
+public class TaskZip {
 
 	static public void zipFolder(String srcFolder, String destZipFile)
 			throws Exception {
@@ -35,6 +35,7 @@ public class Zip {
 			while ((len = in.read(buf)) > 0) {
 				zip.write(buf, 0, len);
 			}
+			in.close();
 		}
 	}
 

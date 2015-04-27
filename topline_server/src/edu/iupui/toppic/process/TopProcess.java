@@ -1,15 +1,15 @@
-package edu.iupui.toppc.task;
+package edu.iupui.toppic.process;
 
 import java.util.TimerTask;
 
 import javax.servlet.ServletContext;
 
-public class MsTask extends TimerTask {
+public class TopProcess extends TimerTask {
 
 	private static boolean isRunning = false;
 	private ServletContext context = null;
 
-	public MsTask(ServletContext context) {
+	public TopProcess(ServletContext context) {
 		this.context = context;
 	}
 
@@ -22,15 +22,14 @@ public class MsTask extends TimerTask {
 		isRunning = false;
 		for (int i = 0; i < count; i++) {
 			// System.out.println(th[i].getName());
-			if (th[i].getName().equals("TopPC")) {
+			if (th[i].getName().equals("TopPIC")) {
 				isRunning = true;
 				break;
 			}
 		}
 
 		if (!isRunning) {
-
-			TopPC t = new TopPC(context);
+			TopPIC t = new TopPIC(context);
 			t.start();
 		}
 	}

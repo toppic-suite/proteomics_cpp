@@ -1,4 +1,4 @@
-package edu.iupui.toppc.arguments;
+package edu.iupui.toppic.servlet;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,8 +24,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import edu.iupui.toppc.util.TaskList;
+import edu.iupui.toppic.task.TaskList;
 
+@WebServlet("/ArgumentServlet")
 public class ArgumentServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -33,21 +35,21 @@ public class ArgumentServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		String basePath = getServletContext().getRealPath("");
+		String title = request.getParameter("upload-task-title");
 		String fragment = request.getParameter("fragment");
-		String nptm = request.getParameter("nptm");
+		String nptm = request.getParameter("n-ptm");
 		String ppm = request.getParameter("ppm");
-		String cprotect = request.getParameter("cprotect");
-		String cutofftype = request.getParameter("cutofftype");
+		String cysProtect = request.getParameter("cys-protect");
+		String cutoffType = request.getParameter("cutoff-type");
 		String cutoff = request.getParameter("cutoff");
-		String shift = request.getParameter("ptm");
-		String mptm = request.getParameter("mptm");
-		String title = request.getParameter("proTitle");
-		String stype = request.getParameter("stype");
-		String table = request.getParameter("table");
+		String ptmNum = request.getParameter("ptm-num");
+		String maxPtm = request.getParameter("max-ptm");
+		String searchType = request.getParameter("search-type");
+		String useGf = request.getParameter("use-gf");
 
 		HttpSession session = request.getSession(true);
 
-		int id = TaskList.getTaskId(basePath + File.separator + "log"
+		int id = TaskList.getTaskId(basePath + File.separator + "tasks"
 				+ File.separator + "taskid.xml");
 
 		String spec = session.getAttribute("spec").toString();
@@ -116,11 +118,12 @@ public class ArgumentServlet extends HttpServlet {
 			Element cysteine_protecting_group = doc
 					.createElement("cysteine_protecting_group");
 			rootElement.appendChild(cysteine_protecting_group);
-			cysteine_protecting_group.appendChild(doc.createTextNode(cprotect));
+			cysteine_protecting_group.appendChild(doc
+					.createTextNode(cysProtect));
 
 			Element search_type = doc.createElement("search_type");
 			rootElement.appendChild(search_type);
-			if (stype == null) {
+			if (searchType == null) {
 				search_type.appendChild(doc.createTextNode("TARGET"));
 			} else {
 				search_type.appendChild(doc.createTextNode("TARGET+DECOY"));
@@ -128,7 +131,7 @@ public class ArgumentServlet extends HttpServlet {
 
 			Element shift_number = doc.createElement("shift_number");
 			rootElement.appendChild(shift_number);
-			shift_number.appendChild(doc.createTextNode(shift));
+			shift_number.appendChild(doc.createTextNode(ptmNum));
 
 			Element error_tolerance = doc.createElement("error_tolerance");
 			rootElement.appendChild(error_tolerance);
@@ -136,7 +139,7 @@ public class ArgumentServlet extends HttpServlet {
 
 			Element cutoff_type = doc.createElement("cutoff_type");
 			rootElement.appendChild(cutoff_type);
-			cutoff_type.appendChild(doc.createTextNode(cutofftype));
+			cutoff_type.appendChild(doc.createTextNode(cutoffType));
 
 			Element cutoff_value = doc.createElement("cutoff_value");
 			rootElement.appendChild(cutoff_value);
@@ -144,15 +147,15 @@ public class ArgumentServlet extends HttpServlet {
 
 			Element max_ptm_mass = doc.createElement("max_ptm_mass");
 			rootElement.appendChild(max_ptm_mass);
-			max_ptm_mass.appendChild(doc.createTextNode(mptm));
+			max_ptm_mass.appendChild(doc.createTextNode(maxPtm));
 
-			Element use_table = doc.createElement("use_table");
-			rootElement.appendChild(use_table);
+			Element use_gf = doc.createElement("use_gf");
+			rootElement.appendChild(use_gf);
 
-			if (table == null) {
-				use_table.appendChild(doc.createTextNode("true"));
+			if (useGf == null) {
+				use_gf.appendChild(doc.createTextNode("true"));
 			} else {
-				use_table.appendChild(doc.createTextNode("false"));
+				use_gf.appendChild(doc.createTextNode("false"));
 			}
 
 			Element protein_variable_ptm_list = doc
@@ -193,13 +196,13 @@ public class ArgumentServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		TaskList.addTaskList(id, title, basePath + File.separator + "log"
+		TaskList.addTaskList(id, title, basePath + File.separator + "tasks"
 				+ File.separator + "tasklist.xml");
 
-		TaskList.setTaskId(basePath + File.separator + "log" + File.separator
+		TaskList.setTaskId(basePath + File.separator + "tasks" + File.separator
 				+ "taskid.xml", id);
 
-		response.sendRedirect("index.jsp");
+		// response.sendRedirect("index.jsp");
 	}
 
 }

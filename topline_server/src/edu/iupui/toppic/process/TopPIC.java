@@ -1,4 +1,4 @@
-package edu.iupui.toppc.task;
+package edu.iupui.toppic.process;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,15 +7,15 @@ import java.io.InputStreamReader;
 
 import javax.servlet.ServletContext;
 
-import edu.iupui.toppc.util.TaskList;
+import edu.iupui.toppic.task.TaskList;
 
-public class TopPC extends Thread {
+public class TopPIC extends Thread {
 
 	private Process p = null;
 
 	private ServletContext context = null;
 
-	public TopPC(ServletContext context) {
+	public TopPIC(ServletContext context) {
 		this.context = context;
 	}
 
@@ -23,7 +23,7 @@ public class TopPC extends Thread {
 	public void run() {
 		try {
 			String basePath = context.getRealPath("");
-			int id = TaskList.getNextId(basePath + File.separator + "log"
+			int id = TaskList.getNextId(basePath + File.separator + "tasks"
 					+ File.separator + "tasklist.xml");
 
 			if (id != 0) {
@@ -35,7 +35,7 @@ public class TopPC extends Thread {
 
 				String spec = TaskList.getSp(arguments);
 
-				Thread.currentThread().setName("TopPC");
+				Thread.currentThread().setName("TopPIC");
 
 				ProcessBuilder pb;
 
@@ -54,8 +54,7 @@ public class TopPC extends Thread {
 							+ "process" + File.separator + "TASK" + id
 							+ File.separator + "run.log");
 				}
-
-				TaskList.setStart(basePath + File.separator + "log"
+				TaskList.setStart(basePath + File.separator + "tasks"
 						+ File.separator + "tasklist.xml", id);
 
 				p = pb.start();
@@ -71,7 +70,7 @@ public class TopPC extends Thread {
 				int exitValue = p.waitFor();
 
 				if (exitValue == 0) {
-					TaskList.setFinished(basePath + File.separator + "log"
+					TaskList.setFinished(basePath + File.separator + "tasks"
 							+ File.separator + "tasklist.xml", id);
 				}
 			}
@@ -90,7 +89,6 @@ public class TopPC extends Thread {
 			try {
 				Runtime.getRuntime().exec("Taskkill /IM toppic.exe /F");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

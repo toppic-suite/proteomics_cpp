@@ -1,4 +1,4 @@
-package edu.iupui.toppc.util;
+package edu.iupui.toppic.task;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,6 +37,7 @@ public class TaskList {
 	public static Document load(String filename) {
 		Document document = null;
 		try {
+			//System.out.println("filename " + filename);
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -269,6 +270,7 @@ public class TaskList {
 	}
 
 	public static double getPercentage(String file) throws IOException {
+		//System.out.println("log file " + file);
 		String lastline = "", currentline = "";
 		File in = new File(file);
 		if (!in.exists()) {

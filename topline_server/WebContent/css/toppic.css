@@ -60,5 +60,31 @@ div.heading {
 }
 
 .progress {
-	margin-bottom: 0px;
+  margin-bottom:0px;
+}
+
+.progress .progress-bar {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-ms-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+
+.table th {
+	text-align: center;
+}
+
+.modal-dialog {
+	position: relative;
+	width: auto;
+	margin: 0px;
+}
+
+#downloadModal {
+	top: 100px;
+	width: 500px;
+	height: 370px;
+	overflow: hidden;
+	margin: 0 auto;
 }

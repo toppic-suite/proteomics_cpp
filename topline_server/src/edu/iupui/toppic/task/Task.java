@@ -1,4 +1,4 @@
-package edu.iupui.toppc.util;
+package edu.iupui.toppic.task;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,7 +13,6 @@ public class Task {
 		start = "";
 		end = "";
 		title = "";
-		spec = "";
 	}
 
 	public String getID() {
@@ -91,6 +90,5 @@ public class Task {
 		return timestr;
 	}
 
-	private String id, status, start, end, submission, title, spec;
-
+	private String id, status, start, end, submission, title;
 }

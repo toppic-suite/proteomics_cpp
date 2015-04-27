@@ -1,4 +1,4 @@
-package edu.iupui.toppc.task;
+package edu.iupui.toppic.task;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,13 +6,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iupui.toppc.util.Task;
-import edu.iupui.toppc.util.TaskList;
-
+@WebServlet("/TaskInfoServlet")
 public class TaskInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +32,7 @@ public class TaskInfoServlet extends HttpServlet {
 		double per = TaskList.getPercentage(logPath);// df.format(per)
 		String status = null, runTime = null;
 		ArrayList<Task> tasks = TaskList.getTask(basePath + File.separator
-				+ "log" + File.separator + "tasklist.xml");
+				+ "tasks" + File.separator + "tasklist.xml");
 		for (int i = 0; i < tasks.size(); i++) {
 			if (tasks.get(i).getID().equals(id)) {
 				status = tasks.get(i).getStatus();
