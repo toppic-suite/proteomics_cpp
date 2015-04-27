@@ -24,7 +24,7 @@ public class TaskStopServlet extends HttpServlet {
 		Thread.enumerate(th);
 
 		for (int i = 0; i < count; i++) {
-			System.out.println("thread name " + th[i].getName());
+			// System.out.println("thread name " + th[i].getName());
 			if (th[i].getName().equals("TopPIC")) {
 				th[i].interrupt();
 				break;

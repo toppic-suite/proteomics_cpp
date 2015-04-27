@@ -107,7 +107,7 @@ $(function() {
             'width', 0 + '%'
             );
         data.context = $('<button class="btn btn-primary"/>').text('Upload')
-            .click(function () {
+          .click(function () {
             $(this).hide();
             data.submit();
           });
