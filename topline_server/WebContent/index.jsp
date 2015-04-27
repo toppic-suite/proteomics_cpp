@@ -9,179 +9,14 @@
 <html>
 <head>
 <title>TopPIC</title>
-<link rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet"
-	href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/toppic.css">
+<link rel="stylesheet" href="css/blueimp-gallery.min.css">
 <link rel="stylesheet" href="css/jquery.fileupload-ui.css">
 </head>
 <body>
 
-	<script type="text/javascript">
-		var submitted = false;
-		var msalign_check_id;
-		var cur_process = 0;
 
-		function submitArgument() {
-
-			document.getElementById('proTitle').value = document
-					.getElementById('title').value;
-
-			if (document.getElementById('title').value == "") {
-				alert("Title can not be empty!");
-				return;
-			}
-
-			if (document.getElementById('db').value == "") {
-				alert("Please upload database file!");
-				return;
-			}
-
-			if (document.getElementById('sp').value == "") {
-				alert("Please upload spectrum file!");
-				return;
-			}
-
-			if (document.getElementById('cutofftype').value == "FDR") {
-				if (!document.getElementById('stype').checked) {
-					alert("FDR cutoff can only be used with TARGET+DECOY search!");
-					return;
-				}
-			}
-
-			if (!document.getElementById('table').checked) {
-				if (document.getElementById('ppm').value != 15
-						&& document.getElementById('ppm').value != 10
-						&& document.getElementById('ppm').value != 5) {
-					alert("Error tolerance can only be 15, 10 or 5 when not using generating function!");
-					return;
-				}
-			}
-
-			var formobject = document.getElementById("arguments");
-			formobject.submit();
-			submitted = true;
-			$("#myModal").modal({
-				show : true
-			});
-
-		}
-
-		function checkInt(d, v) {
-			var t = d.value;
-			if (t.length <= 0) {
-				alert("can not be blank!");
-			} else {
-				for (var i = 0; i < t.length; i++) {
-					if (t.charAt(i) in [ '0', '1', '2', '3', '4', '5', '6',
-							'7', '8', '9' ]) {
-					} else {
-						alert("must be positive");
-						d.value = v;
-						d.focus();
-						break;
-					}
-				}
-			}
-		}
-
-		function checkNum(d) {
-			var t = d.value;
-			if (isNaN(Number(t))) {
-				alert("must be number!");
-				d.value = "0.01";
-				d.focus();
-			}
-			if (Number(t) < 0) {
-				alert("must be positive!");
-				d.value = "0.01";
-				d.focus();
-			}
-
-		}
-
-		function showTask() {
-			$('#myModal').modal("hide");
-			document.getElementById("resultTab").click();
-			document.getElementById('resultFrame').src = "./tasklist.jsp";
-			document.getElementById('title').value = '';
-			document.getElementById('sp').value = '';
-			document.getElementById('db').value = '';
-		}
-
-		function refreshtab() {
-			if (submitted) {
-				window.location.reload();
-			}
-		}
-	</script>
-	<style type="text/css">
-body {
-	padding-top: 20px;
-	padding-bottom: 60px;
-}
-
-.container {
-	width: 890px;
-}
-
-.marketing {
-	margin: 60px 0;
-}
-
-.marketing p+h4 {
-	margin-top: 28px;
-}
-
-div.panel-heading {
-	font-size: 1.8em;
-}
-
-div.heading {
-	font-size: 3em;
-}
-
-.modal-dialog {
-	position: relative;
-	width: auto;
-	margin: 0px;
-}
-
-#myModal {
-	top: 100px;
-	width: 500px;
-	height: 370px;
-	overflow: hidden;
-	margin: 0 auto;
-}
-
-.jumbotron {
-	margin: 80px 0;
-	text-align: center;
-}
-
-.jumbotron h1 {
-	font-size: 100px;
-	line-height: 1;
-}
-
-.jumbotron .lead {
-	font-size: 24px;
-	line-height: 1.25;
-}
-
-.jumbotron .btn {
-	font-size: 21px;
-	padding: 14px 24px;
-}
-
-.progress {
-	margin-bottom: 0px;
-}
-</style>
-
-	<!-- header -->
 	<div class="container" id="content">
 		<div class="header">
 
@@ -396,8 +231,8 @@ div.heading {
 			</div>
 		</div>
 
-
-		<script id="template-upload" type="text/x-tmpl">
+	</div>
+	<script id="template-upload" type="text/x-tmpl">
 		{% for (var i=0, file; file=o.files[i]; i++) { %}
     		<tr class="template-upload fade">
         	<td class="name"><span>{%=file.name%}</span></td>
@@ -425,8 +260,8 @@ div.heading {
     	</tr>
 	{% } %}
 	</script>
-		<!-- The template to display files available for download -->
-		<script id="template-download" type="text/x-tmpl">
+	<!-- The template to display files available for download -->
+	<script id="template-download" type="text/x-tmpl">
 		{% for (var i=0, file; file=o.files[i]; i++) { %}
     		<tr class="template-download fade">
         		{% if (file.error) { %}
@@ -448,20 +283,19 @@ div.heading {
     	</tr>
 		{% } %}
 </script>
-		<script
-			src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script src="js/vendor/jquery.ui.widget.js"></script>
-		<script src="js/tmpl.min.js"></script>
-		<script src="js/load-image.all.min.js"></script>
-		<script src="js/canvas-to-blob.min.js"></script>
-		<script
-			src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-		<script src="js/jquery.blueimp-gallery.min.js"></script>
-		<script src="js/jquery.iframe-transport.js"></script>
-		<script src="js/jquery.fileupload.js"></script>
-		<script src="js/jquery.fileupload-fp.js"></script>
-		<script src="js/jquery.fileupload-ui.js"></script>
-		<script src="js/locale.js"></script>
-		<script src="js/main.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/vendor/jquery.ui.widget.js"></script>
+	<script src="js/tmpl.min.js"></script>
+	<script src="js/load-image.all.min.js"></script>
+	<script src="js/canvas-to-blob.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.blueimp-gallery.min.js"></script>
+	<script src="js/jquery.iframe-transport.js"></script>
+	<script src="js/jquery.fileupload.js"></script>
+	<script src="js/jquery.fileupload-fp.js"></script>
+	<script src="js/jquery.fileupload-ui.js"></script>
+	<script src="js/locale.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/toppic-argument.js"></script>
 </body>
 </html>
