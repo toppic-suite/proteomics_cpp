@@ -347,15 +347,15 @@ int TopPIC_post(std::map<std::string, std::string> & arguments) {
     table_out = nullptr;
     std::cout << "Outputting PrSM table - finished." << std::endl;
 
-    std::cout << "Generating PrSM xml files - started." << std::endl;
-    XmlGeneratorPtr xml_gene = std::make_shared<XmlGenerator>(prsm_para_ptr, resource_dir, suffix, "prsm_cutoff");
-    xml_gene->process();
-    xml_gene = nullptr;
-    std::cout << "Generating PrSM xml files - finished." << std::endl;
+    /*std::cout << "Generating PrSM xml files - started." << std::endl;*/
+    //XmlGeneratorPtr xml_gene = std::make_shared<XmlGenerator>(prsm_para_ptr, resource_dir, suffix, "prsm_cutoff");
+    //xml_gene->process();
+    //xml_gene = nullptr;
+    //std::cout << "Generating PrSM xml files - finished." << std::endl;
 
-    std::cout << "Converting PrSM xml files to html files - started." << std::endl;
-    translate(arguments, "prsm_cutoff");
-    std::cout << "Converting PrSM xml files to html files - finished." << std::endl;
+    //std::cout << "Converting PrSM xml files to html files - started." << std::endl;
+    //translate(arguments, "prsm_cutoff");
+    /*std::cout << "Converting PrSM xml files to html files - finished." << std::endl;*/
 
     cutoff_type = (arguments["cutoffProteoformType"] == "FDR") ? "FORMFDR": "EVALUE";
     std::cout << "PrSM filtering by " << cutoff_type << " - started." << std::endl;
@@ -401,15 +401,15 @@ int TopPIC_post(std::map<std::string, std::string> & arguments) {
     form_out = nullptr;
     std::cout << "Outputting proteoform table - finished." << std::endl;
 
-    std::cout << "Generating proteoform xml files - started." << std::endl;
-    xml_gene = std::make_shared<XmlGenerator>(prsm_para_ptr, resource_dir, "CUTOFF_RESULT_FORM", "proteoform_cutoff");
-    xml_gene->process();
-    xml_gene = nullptr;
-    std::cout << "Generating proteoform xml files - finished." << std::endl;
+    /*std::cout << "Generating proteoform xml files - started." << std::endl;*/
+    //xml_gene = std::make_shared<XmlGenerator>(prsm_para_ptr, resource_dir, "CUTOFF_RESULT_FORM", "proteoform_cutoff");
+    //xml_gene->process();
+    //xml_gene = nullptr;
+    //std::cout << "Generating proteoform xml files - finished." << std::endl;
 
-    std::cout << "Converting proteoform xml files to html files - started." << std::endl;
-    translate(arguments, "proteoform_cutoff");
-    std::cout << "Converting proteoform xml files to html files - finished." << std::endl;
+    //std::cout << "Converting proteoform xml files to html files - started." << std::endl;
+    //translate(arguments, "proteoform_cutoff");
+    /*std::cout << "Converting proteoform xml files to html files - finished." << std::endl;*/
   } catch (const char* e) {
     std::cout << "[Exception]" << std::endl;
     std::cout << e << std::endl;
@@ -470,24 +470,24 @@ int TopPICProgress_multi_file(std::map<std::string, std::string> & arguments,
     prot::TopPIC_post(arguments);
   }
 
-  if (arguments["keepTempFiles"] != "true") {
-    std::cout << "Deleting temporary files - started." << std::endl;
-    std::string ori_db_file_name = arguments["oriDatabaseFileName"];
+  /*if (arguments["keepTempFiles"] != "true") {*/
+    //std::cout << "Deleting temporary files - started." << std::endl;
+    //std::string ori_db_file_name = arguments["oriDatabaseFileName"];
 
-    for (size_t k = 0; k < spec_file_lst.size(); k++) {
-      std::string sp_file_name = spec_file_lst[k];
-      prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_proteoform_cutoff_xml");
-      prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_prsm_cutoff_xml");
-      prot::file_util::cleanDir(ori_db_file_name, sp_file_name);
-    }
+    //for (size_t k = 0; k < spec_file_lst.size(); k++) {
+      //std::string sp_file_name = spec_file_lst[k];
+      //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_proteoform_cutoff_xml");
+      //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_prsm_cutoff_xml");
+      //prot::file_util::cleanDir(ori_db_file_name, sp_file_name);
+    //}
 
-    std::string sp_file_name = base_name + "_ms2.msalign";
-    prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_proteoform_cutoff_xml");
-    prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_prsm_cutoff_xml");
-    prot::file_util::cleanDir(ori_db_file_name, sp_file_name);
+    //std::string sp_file_name = base_name + "_ms2.msalign";
+    //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_proteoform_cutoff_xml");
+    //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_prsm_cutoff_xml");
+    //prot::file_util::cleanDir(ori_db_file_name, sp_file_name);
 
-    std::cout << "Deleting temporary files - finished." << std::endl; 
-  }
+    //std::cout << "Deleting temporary files - finished." << std::endl; 
+  /*}*/
 
   return EXIT_SUCCESS;
 }
