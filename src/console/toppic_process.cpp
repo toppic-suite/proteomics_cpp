@@ -125,17 +125,15 @@ int TopPIC_identify(std::map<std::string, std::string> & arguments) {
 
     std::vector<std::string> input_exts;
 
-    std::cout << "Non PTM filtering - started." << std::endl;
     ZeroPtmFilterMngPtr zero_filter_mng_ptr
-        = std::make_shared<ZeroPtmFilterMng>(prsm_para_ptr, thread_num, "ZERO_FILTER");
+        = std::make_shared<ZeroPtmFilterMng>(prsm_para_ptr, thread_num, "NO_FILTER");
     ZeroPtmFilterProcessorPtr zero_filter_processor
         = std::make_shared<ZeroPtmFilterProcessor>(zero_filter_mng_ptr);
     zero_filter_processor->process();
-    std::cout << "Non PTM filtering - finished." << std::endl;
 
     std::cout << "Non PTM search - started." << std::endl;
     ZeroPtmSearchMngPtr zero_search_mng_ptr
-        = std::make_shared<ZeroPtmSearchMng>(prsm_para_ptr, "ZERO_FILTER", "ZERO_PTM");
+        = std::make_shared<ZeroPtmSearchMng>(prsm_para_ptr, "NO_FILTER", "ZERO_PTM");
     ZeroPtmSearchProcessorPtr zero_search_processor
         = std::make_shared<ZeroPtmSearchProcessor>(zero_search_mng_ptr);
     zero_search_processor->process();
@@ -148,19 +146,19 @@ int TopPIC_identify(std::map<std::string, std::string> & arguments) {
     input_exts.push_back("ZERO_PTM_INTERNAL");
 
     if (ptm_num >= 1) {
-      std::cout << "One PTM filtering - started." << std::endl;
-      OnePtmFilterMngPtr one_ptm_filter_mng_ptr
-          = std::make_shared<OnePtmFilterMng>(prsm_para_ptr, "ONE_PTM_FILTER", thread_num);
-      OnePtmFilterProcessorPtr one_filter_processor
-          = std::make_shared<OnePtmFilterProcessor>(one_ptm_filter_mng_ptr);
-      one_filter_processor->process();
-      std::cout << "One PTM filtering - finished." << std::endl;
+      /*std::cout << "One PTM filtering - started." << std::endl;*/
+      //OnePtmFilterMngPtr one_ptm_filter_mng_ptr
+      //= std::make_shared<OnePtmFilterMng>(prsm_para_ptr, "ONE_PTM_FILTER", thread_num);
+      //OnePtmFilterProcessorPtr one_filter_processor
+      //= std::make_shared<OnePtmFilterProcessor>(one_ptm_filter_mng_ptr);
+      //one_filter_processor->process();
+      /*std::cout << "One PTM filtering - finished." << std::endl;*/
 
       std::cout << "One PTM search - started." << std::endl;
       int shift_num = 1;
       PtmSearchMngPtr one_search_mng_ptr
           = std::make_shared<PtmSearchMng>(prsm_para_ptr, n_top, max_ptm_mass, min_ptm_mass,
-                                           shift_num, thread_num, "ONE_PTM_FILTER", "ONE_PTM");
+                                           shift_num, thread_num, "NO_FILTER", "ONE_PTM");
       OnePtmSearchProcessorPtr one_search_processor
           = std::make_shared<OnePtmSearchProcessor>(one_search_mng_ptr);
       one_search_processor->process();
@@ -174,19 +172,19 @@ int TopPIC_identify(std::map<std::string, std::string> & arguments) {
     }
 
     if (ptm_num >= 2) {
-      std::cout << "Diagonal PTM filtering - started." << std::endl;
-      DiagFilterMngPtr diag_filter_mng_ptr
-          = std::make_shared<DiagFilterMng>(prsm_para_ptr, filter_result_num,
-                                            thread_num, "DIAG_FILTER");
-      DiagFilterProcessorPtr diag_filter_processor
-          = std::make_shared<DiagFilterProcessor>(diag_filter_mng_ptr);
-      diag_filter_processor->process();
-      std::cout << "Diagonal filtering - finished." << std::endl;
+      /*std::cout << "Diagonal PTM filtering - started." << std::endl;*/
+      //DiagFilterMngPtr diag_filter_mng_ptr
+      //= std::make_shared<DiagFilterMng>(prsm_para_ptr, filter_result_num,
+      //thread_num, "DIAG_FILTER");
+      //DiagFilterProcessorPtr diag_filter_processor
+      //= std::make_shared<DiagFilterProcessor>(diag_filter_mng_ptr);
+      //diag_filter_processor->process();
+      /*std::cout << "Diagonal filtering - finished." << std::endl;*/
 
       std::cout << "Two PTM search - started." << std::endl;
       PtmSearchMngPtr two_search_mng_ptr
           = std::make_shared<PtmSearchMng>(prsm_para_ptr, n_top, max_ptm_mass, min_ptm_mass,
-                                           ptm_num, thread_num, "DIAG_FILTER", "PTM");
+                                           ptm_num, thread_num, "NO_FILTER", "PTM");
       PtmSearchProcessorPtr processor = std::make_shared<PtmSearchProcessor>(two_search_mng_ptr);
       processor->process();
       std::cout << "Two PTM search - finished." << std::endl;
@@ -281,29 +279,33 @@ int TopPIC_post(std::map<std::string, std::string> & arguments) {
       prsm_clusters->process();
       prsm_clusters = nullptr;
     }
+
     std::cout << "Finding PrSM clusters - finished." << std::endl;
 
+    std::string suffix = "CLUSTERS";
+
     if (arguments["searchType"] == "TARGET") {
-      std::cout << "Top PrSM selecting - started" << std::endl;
-      PrsmTopSelectorPtr selector
-          = std::make_shared<PrsmTopSelector>(db_file_name, sp_file_name, "CLUSTERS", "TOP", n_top);
-      selector->process();
-      selector = nullptr;
-      std::cout << "Top PrSM selecting - finished." << std::endl;
+      /*std::cout << "Top PrSM selecting - started" << std::endl;*/
+      //PrsmTopSelectorPtr selector
+          //= std::make_shared<PrsmTopSelector>(db_file_name, sp_file_name, "CLUSTERS", "TOP", n_top);
+      //selector->process();
+      //selector = nullptr;
+      /*std::cout << "Top PrSM selecting - finished." << std::endl;*/
     } else {
-      std::cout << "Top PrSM selecting - started " << std::endl;
-      PrsmTopSelectorPtr selector
-          = std::make_shared<PrsmTopSelector>(db_file_name, sp_file_name,
-                                              "CLUSTERS", "TOP_PRE", n_top);
-      selector->process();
-      selector = nullptr;
-      std::cout << "Top PrSM selecting - finished." << std::endl;
+      /*std::cout << "Top PrSM selecting - started " << std::endl;*/
+      //PrsmTopSelectorPtr selector
+          //= std::make_shared<PrsmTopSelector>(db_file_name, sp_file_name,
+                                              //"CLUSTERS", "TOP_PRE", n_top);
+      //selector->process();
+      //selector = nullptr;
+      /*std::cout << "Top PrSM selecting - finished." << std::endl;*/
 
       std::cout << "FDR computation - started. " << std::endl;
-      PrsmFdrPtr fdr = std::make_shared<PrsmFdr>(db_file_name, sp_file_name, "TOP_PRE", "TOP");
+      PrsmFdrPtr fdr = std::make_shared<PrsmFdr>(db_file_name, sp_file_name, suffix, "TOP");
       fdr->process();
       fdr = nullptr;
       std::cout << "FDR computation - finished." << std::endl;
+      suffix = "TOP";
     }
 
     std::string cutoff_type = arguments["cutoffSpectralType"];
@@ -311,13 +313,13 @@ int TopPIC_post(std::map<std::string, std::string> & arguments) {
     double cutoff_value;
     std::istringstream(arguments["cutoffSpectralValue"]) >> cutoff_value;
     PrsmCutoffSelectorPtr cutoff_selector
-        = std::make_shared<PrsmCutoffSelector>(db_file_name, sp_file_name, "TOP",
+        = std::make_shared<PrsmCutoffSelector>(db_file_name, sp_file_name, suffix,
                                                "CUTOFF_RESULT_SPEC", cutoff_type, cutoff_value);
     cutoff_selector->process();
     cutoff_selector = nullptr;
     std::cout << "PrSM filtering by " << cutoff_type << " - finished." << std::endl;
 
-    std::string suffix = "CUTOFF_RESULT_SPEC";
+    suffix = "CUTOFF_RESULT_SPEC";
 
     if (localization) {
       std::cout << "PTM characterization - started." << std::endl;
@@ -471,22 +473,22 @@ int TopPICProgress_multi_file(std::map<std::string, std::string> & arguments,
   }
 
   /*if (arguments["keepTempFiles"] != "true") {*/
-    //std::cout << "Deleting temporary files - started." << std::endl;
-    //std::string ori_db_file_name = arguments["oriDatabaseFileName"];
+  //std::cout << "Deleting temporary files - started." << std::endl;
+  //std::string ori_db_file_name = arguments["oriDatabaseFileName"];
 
-    //for (size_t k = 0; k < spec_file_lst.size(); k++) {
-      //std::string sp_file_name = spec_file_lst[k];
-      //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_proteoform_cutoff_xml");
-      //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_prsm_cutoff_xml");
-      //prot::file_util::cleanDir(ori_db_file_name, sp_file_name);
-    //}
+  //for (size_t k = 0; k < spec_file_lst.size(); k++) {
+  //std::string sp_file_name = spec_file_lst[k];
+  //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_proteoform_cutoff_xml");
+  //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_prsm_cutoff_xml");
+  //prot::file_util::cleanDir(ori_db_file_name, sp_file_name);
+  //}
 
-    //std::string sp_file_name = base_name + "_ms2.msalign";
-    //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_proteoform_cutoff_xml");
-    //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_prsm_cutoff_xml");
-    //prot::file_util::cleanDir(ori_db_file_name, sp_file_name);
+  //std::string sp_file_name = base_name + "_ms2.msalign";
+  //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_proteoform_cutoff_xml");
+  //prot::file_util::delDir(prot::file_util::basename(sp_file_name) + "_prsm_cutoff_xml");
+  //prot::file_util::cleanDir(ori_db_file_name, sp_file_name);
 
-    //std::cout << "Deleting temporary files - finished." << std::endl; 
+  //std::cout << "Deleting temporary files - finished." << std::endl; 
   /*}*/
 
   return EXIT_SUCCESS;
