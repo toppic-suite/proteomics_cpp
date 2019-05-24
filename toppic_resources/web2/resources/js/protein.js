@@ -203,22 +203,34 @@ function residue_Data_n_Sequence(prsm,e_value)
 			{
 				g_prsm.annotated_protein.annotation.ptm.occurence.forEach(function(occurence,index){
 					
+					known_residue_change ={};
+					
 					known_residue_change["residue_position"] = parseInt(occurence.left_pos);
 					known_residue_change["color"] = "red";
 					known_change.push(known_residue_change);
+					
 					
 				})
 			}
 			else
 			{
+					known_residue_change = {} ;
+					
 					known_residue_change["residue_position"] = parseInt(g_prsm.annotated_protein.annotation.ptm.occurence.left_pos);
 					known_residue_change["color"] = "red";
 					known_change.push(known_residue_change);
+					
 			}
 		}
 	}
 	
+	console.log("known_change : ", known_change);
+	
+	
 	residue_Data["known_change"] = known_change ;
+	
+	console.log("residue_Data.known_change : ",residue_Data.known_change);
+	
 	return [residue_Sequence, residue_Data] ;
 }
 	/*

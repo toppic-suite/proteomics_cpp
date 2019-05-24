@@ -30,7 +30,7 @@ function build_svg(id,width,height){
 	console.log("first_position : ", first_position);
 	console.log("last_position : ", last_position);
 	
-	let new_first_position = first_position ;
+	let new_first_position = 0 ;
 	let initial_skip_count = 0 ;
 	let start_info = "" ;
 	let boolean_start_info = false ;
@@ -493,6 +493,7 @@ function residue_position(protein_length_array, id, width, height)
 	if(!(protein_length_array.first_residue_position == 0) )
 	{
 		l_class_first_position = ".class_" +id.split("#")[1]+"_"+(parseInt(protein_length_array.first_residue_position)-1);
+		console.log("l_class_first_position : ", l_class_first_position);
 		let x = parseFloat(d3.select(l_class_first_position).node().getAttribute('x')) + ((x_scale_end_value-x_scale_start_value)/(splice_length*2)) ;
 		let y = parseFloat(d3.select(l_class_first_position).node().getAttribute('y')) -12 ;
 		
