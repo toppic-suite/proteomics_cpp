@@ -1,0 +1,29 @@
+/* svg{
+  font-family : 'FreeMono',Miltonian,monospace;
+  font-size: 16px;
+  margin-left:auto;
+  margin-right:auto;
+  display:block;
+} */
+#l_id_0{
+  text-anchor : end ; 
+}
+	
+div.tooltip {
+  box-sizing: border-box;
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 2px;	
+  margin-left: 0px;
+  text-align: center;
+  text-decoration: none !important;
+  cursor: pointer;
+  border: 1px solid #111111;	
+}
+svgContainer,svg{
+  font-family : 'FreeMono',Miltonian,monospace;
+  font-size: 16px;
+  margin-left:auto;
+  margin-right:auto;
+  display:block;
+}
