@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Protein-Spectrum-Match for Spectrum</title>
+<link rel="stylesheet" type="text/css" href="resources/css_lib/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="resources/css/prsm.css">
+<link rel="stylesheet" type="text/css" href="resources/css_lib/bootstrap.min.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js_lib/d3/d3.js"></script>
+<script type="text/javascript" src="resources/js_lib/d3/d3.min.js"></script>
+<script type="text/javascript" src="resources/js_lib/canvas-toBlob.js"></script>
+<script type="text/javascript" src="resources/js/FileSaver.js"></script>
+<script type="text/javascript" src="resources/js_lib/jquery.dataTables.js"></script>
+<script type="text/javascript" src="resources/js/build_PrSM.js"></script>
+<script type="text/javascript" src="resources/js/residue.js"></script>
+<script type="text/javascript" src="resources/js/save_image.js"></script>
+<script>
+var head= document.getElementsByTagName('head')[0];
+var script= document.createElement('script');
+var x = location.href;
+var l_split = x.split(/[?#]+/);
+console.log("l_split : ", l_split);
+var prsm_seq_num = l_split[1].split("=");
+var file_name = "data_js/prsms/prsm" + prsm_seq_num[1]+".js";
+console.log("file_name : "+file_name);
+script.type= 'text/javascript';
+script.src= file_name;
+var width = 1000;
+var height = 55;
+var loadprsm = false ;
+//script.onload=callback;
+head.appendChild(script);
+var id = "#l_svg"
+
+var script_prsm = document.createElement('script');
+script_prsm.type= 'text/javascript';
+script_prsm.src = "resources/js/prsm.js" ;
+script.onload = function () {
+	
+	head.appendChild(script_prsm);
+	BuildUrl();
+	loadDatafromJson2Html();
+	build_svg(id, width, height);
+	createTableElements();
+	occurence_PTM();
+	
+};
+</script>
+<script type="text/javascript">
+          var peaksCount = 65;
+        </script>
+<style>
+		svg{
+			margin-left:auto;
+			margin-right:auto;
+			display:block;
+		}
+		#l_id_0{
+			text-anchor : end ; 
+		}
+		
+		div.tooltip {
+		  box-sizing: border-box;
+		  display: inline-block;
+		  min-width: 1.5em;
+		  padding: 2px;	
+		  margin-left: 0px;
+		  text-align: center;
+		  text-decoration: none !important;
+		  cursor: pointer;
+		  border: 1px solid #111111;	
+	}
+	.modal.modal-wide .modal-dialog {
+		  width: 70%;
+	}
+	.modal-wide .modal-body {
+		  overflow-y: auto;
+	}
+</style>		
+</head>
+<body>
+<div class="container">
+<p style="font-size:15px;">
+<a href="proteins.html">All proteins</a> /
+      <a id = "protien_url" href = "#"></a> / 
+      <a id= "proteoform_url" href="#"></a>
+</p>
+<h2 id = "Protein-Spectrum-Match-Id-SpecId"></h2>
+<table id = "_width_table" class="table table-borderless" style="font-size:15px">
+<tr>
+<td>File name:</td><td id = 'File_name' ></td>																
+</tr>
+<tr>
+<td>PrSM ID:</td><td id = "PrSM_ID"></td><td>Scan(s):</td><td id = "Scan"></td><td>Precursor charge:</td><td id = "Precursor_charge"></td>
+</tr>
+<tr>
+<td>Precursor m/z:</td><td id = "Precursor_m/z"></td><td>Precursor mass:</td><td id = "Precursor_mass"></td><td>Proteoform mass:</td><td id = "Proteoform_mass"></td>
+</tr>
+<tr>
+<td># matched peaks:</td><td id = "matched_peaks">28</td><td># matched fragment ions:</td><td id = "matched_fragment_ions">25</td><td># unexpected modifications:</td><td id = "unexpected_modifications">#</td>
+</tr>
+<tr>
+<td>E-value:</td><td id = "E_value">1.63e-021</td><td>P-value:</td><td id = "P_value">1.63e-021</td><td>Q-value (Spectral FDR):</td><td id = "Q_value">0</td>
+</tr>
+</table>
+<div id="alignment" style="font-family: 'FreeMono'; font-size:16px;line-height:2.5;background-color:#FFF;">
+
+<table class="table table-borderless table-condensed nopadding table-bold">
+<tr>
+		<svg id = "l_svg" ></svg>
+</tr>
+<tr>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id = "saveImage_png" class="btn btn-secondary  btn-sm" > Download PRSM as PNG Image</button>&nbsp;&nbsp;
+<button id = "saveImage_svg" class="btn btn-secondary  btn-sm" data-toggle="modal" data-target="#myModal" > Download PRSM as SVG</button>
+<!-- <button id = "saveImj+ u  age" style = "float: right"> Click to Download Image</button> -->
+</tr>
+</table>
+</div>
+<div id="ptm_abbreviation" style="font-size:16px;">
+<!-- Data will be retrieved form Fixed_PTM()   -->
+	
+</div>
+<br>
+<div style="font-size:16px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id = "all_peak_count" href="#spectrum" onclick="showAllPeaks();">All peaks </a>&nbsp;&nbsp;<a id = "matched_peak_count" href="#spectrum" onclick="showMatchedPeaks();">Matched peaks </a>&nbsp;&nbsp;<a id = "not_matched_peak_count" href="#spectrum" onclick="showNotMatchedPeaks();">Not matched peaks </a>
+</div>
+<table id="spectrum" class="display" >
+<thead>
+<tr role="row">
+	<th width="25">Scan</th><th width="25">Peak</th><th width="90">Mono mass</th><th width="90">Mono m/z</th><th width="80" style="vertical-align:middle">Intensity</th><th width="75" style="vertical-align:middle">Charge</th><th width="103">Theoretical mass</th><th width="50" style="vertical-align:middle">Ion</th><th width="70" style="vertical-align:middle">Pos</th><th width="95">Mass error</th><th width="80">PPM error</th>
+</tr>
+</thead>
+
+</table>
+<p style="font-size:15px;">
+<a href="proteins.html">All proteins</a> /
+      <a id = "protien_url_end" href = ""></a> / 
+       <a id= "proteoform_url_end" href=""></a>
+</p>
+</div>
+
+<div class="container">
+  <!-- Trigger the modal with a button -->
+  <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
+	
+  <!-- Modal -->
+  
+  <div class="modal modal-wide fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">SVG Resize</h4>
+          <div class = "window-resize">
+          <form class="form-inline">
+			  <div class="form-group">
+			      <label>Width-Span:</label>
+			      		<input class="form-control" id="width-span" type="text" name="surname" placeholder = "enter value less than 28">
+			      <label>Height-Span:</label>
+			      		<input class="form-control" id="height-span" type="text" name="surname" placeholder = "enter value less than 60">
+			      <label>Sequence-row-size:</label>
+			      		<input class="form-control" id="sequence-span" type="text" name="surname" placeholder = "enter sequence size">
+			  </div>
+			  
+			  <button type = "button" class = "resize">Go</button>
+			</form>
+	       	
+   		   </div>
+        </div>
+     
+        <div class="modal-body">
+          <svg id = "l_popup_svg"></svg>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id = "download" data-dismiss="modal">Download SVG</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+</body>
+
+</html>
