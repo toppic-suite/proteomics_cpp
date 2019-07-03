@@ -4,32 +4,36 @@
 <link rel="stylesheet" type="text/css" href="resources/css_lib/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="resources/css_lib/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="resources/css/prsm.css">
-<script type="text/javascript" src="resources/js_lib/jquery.js"></script>
-<script type="text/javascript" src="resources/js_lib/jquery.dataTables.js"></script>
+<script src="resources/js_lib/jQuery_3_4.js"></script>
+<script src="resources/js_lib/jquery.dataTables.js"></script>
+<script src="resources/js/proteoform.js"></script>
 <script>
 var head= document.getElementsByTagName('head')[0];
 var script= document.createElement('script');
+/* Get the URL from browser */
 var x = location.href;
 var l_split = x.split("?");
+/* get the proteoform Id number by splitting url with ? and =  */
 var proteoform_id = l_split[1].split("=");
 var file_name = "data_js/proteoforms/proteoform" + proteoform_id[1]+".js";
 console.log("file_name : "+file_name);
 script.type= 'text/javascript';
 script.src= file_name;
-//script.onload=callback;
+/* include the proteoform data_file  */
 head.appendChild(script);
 script.onload = function () {
-	proteoform_Url();
-	  createTable_data();
+	/* Invoke the below functions only after loading the datafile */
+	proteoformUrl();
+	createTableData();
 }
 </script>
-<script type="text/javascript" src="resources/js/proteoform.js"></script>
+
 </head>
 <body>
 <div class="container">
 <p style="font-size:15px;">
 <a href="proteins.html">All proteins</a> /
-	  <a name = "protein_url" href="#"></a>
+	  <a id = "protein_url_start" href="#"></a>
 </p>
 <h2 id = "proteoform_header"></h2>
 <p id = "prsm_count" style="font-size:16px;"></p>
@@ -40,7 +44,7 @@ script.onload = function () {
 </table>
 <p style="font-size:15px;">
 <a href="proteins.html">All proteins</a> /
-		<a name = "protein_url" href="#"></a>
+		<a id = "protein_url_end" href="#"></a>
 </p>
 </div>
 </body>

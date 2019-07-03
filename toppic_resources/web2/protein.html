@@ -5,30 +5,30 @@
 <link rel="stylesheet" type="text/css" href="resources/css_lib/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="resources/css/prsm.css">
 <link rel="stylesheet" type="text/css" href="resources/css/svg.css">
-<script type="text/javascript" src="resources/js_lib/jquery.js"></script>
-<script type="text/javascript" src="resources/js_lib/jquery.dataTables.js"></script>
-<script type="text/javascript" src="resources/js_lib/d3/d3.js"></script>
-<script type="text/javascript" src="resources/js_lib/d3/d3.min.js"></script>
-<script type="text/javascript" src="resources/js/protein.js"></script>
-<script type="text/javascript" src="resources/js/protein_Residue.js"></script>
+<script src="resources/js_lib/jQuery_3_4.js"></script>
+<script src="resources/js_lib/jquery.dataTables.js"></script>
+<script src="resources/js_lib/d3/d3.js"></script>
+<script src="resources/js/protein.js"></script>
+<script src="resources/js/prsm_2_svg.js"></script>
+<script src="resources/js/prsmToSVGDataUtility.js"></script>
+<script src="resources/js/coordinates_util.js"></script>
 <script>
 var head= document.getElementsByTagName('head')[0];
 var script= document.createElement('script');
+/* Get the URL from browser */
 var x = location.href;
 var l_split = x.split("?");
+/* get the proteoform Id number by splitting url with "?" and "="  */
 var protein_seq_num = l_split[1].split("=");
 var file_name = "data_js/proteins/protein" + protein_seq_num[1]+".js";
-console.log("file_name : "+file_name );
 script.type= 'text/javascript';
 script.src= file_name;
-//script.onload=callback;
+/* include the proteoform json data_file as script */
 head.appendChild(script);
 script.onload = function (data) {
-	    //do stuff with the script
-	    //console.log("Sree_data : ",data);
-	   // console.log("Sree_data : ",data.toString());
-		build_protein();
-	};	
+		/* invoke protein function to form HTML elements from protein.js */
+		protein();
+};	
 </script>
 </head>
 <body>

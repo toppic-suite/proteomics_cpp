@@ -1,4 +1,6 @@
 div.container {
+	font-family : "Helvetica Neue",Helvetica,Arial,sans-serif;
+  	font-size: 15px;
 	max-width: 1060px;
 	margin: 0 auto;
 }
@@ -17,7 +19,7 @@ div.container {
 .nopadding td {
    padding: 0 !important;
    margin: 0 !important;
-   spacing: 0 !important;
+   /*spacing: 0 !important;*/
 }
 
 .dataTables_filter, .dataTables_info {
@@ -27,6 +29,76 @@ div.container {
 .table-nonfluid {
    width: auto;
 }
+
+a{
+	color: #428bca !important;
+}
+.btn{
+	background-color:  #428bca !important;
+}
+.btn-secondary{
+	background-color:  red !important;
+}
+
+.modal-header {
+  min-height: 1.42857143px !important;
+  padding: 5px !important;
+  border-bottom: 0px solid #e5e5e5 !important;
+  
+  }
+
+.modal2-header{
+	min-height: 10.42857143px !important;
+  padding: 0  !important;
+  border-bottom: 1px solid #e5e5e5 !important;
+ 
+}
+.modal-lg {
+   	max-width: 70% !important;
+} 
+.modal-body {
+	  overflow-y: auto !important;
+}
+.table_modal tr {
+	border-top: 0px !important;
+  border-bottom: 0px !important;
+}
+.table_modal td {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+} 
+.table-borderless tr, .table-borderless td{
+  padding: .20rem !important;
+  margin: 0 !important;
+}
+.table-borderless {
+	margin-bottom: 0.5rem !important;
+}
+
+    
+
+div.tooltip {
+  box-sizing: border-box;
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 2px;	
+  margin-left: 0px;
+  text-align: center;
+  text-decoration: none !important;
+  cursor: pointer;
+  border: 1px solid #111111;	
+}
+svg{
+  font-family : 'FreeMono',Miltonian,monospace;
+  font-size: 16px;
+  margin-left:auto;
+  margin-right:auto;
+  display:block;
+}
+/* #click_resize{
+	border-right: 0px white solid !important;
+	cellpadding: 5px !important;
+} */
 /*
 @font-face {
   font-family: "FreeMono";

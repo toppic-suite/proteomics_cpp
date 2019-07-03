@@ -6,10 +6,9 @@ $(document).ready(function() {
     "order": [[ 0, "asc" ]],
     "bSortClasses": false
   } );
-} );
+} ); 	
 
 function showMatchedPeaks() {
-	console.log("showMatchedPeaks: ")
   var elems = document.getElementsByClassName("matched_peak");
   for(var i = 0; elems.length > i; i++) {
     elems[i].style.display = "";
@@ -44,24 +43,20 @@ function showAllPeaks() {
   }
   $('div.dataTables_scrollBody').height(400);
 }
-
 function showIonPeaks(ids) {
-  var elems = document.getElementsByClassName('matched_peak');
-  for(var i = 0; elems.length > i; i++) {
-    elems[i].style.display = 'none';
-  }
-  elems = document.getElementsByClassName('unmatched_peak');
-  for(var i = 0; elems.length > i; i++) {
-    elems[i].style.display = 'none';
-  }
+	console.log("ids : ", ids);
+	  var elems = document.getElementsByClassName('matched_peak');
+	  for(var i = 0; elems.length > i; i++) {
+	    elems[i].style.display = 'none';
+	  }
+	  elems = document.getElementsByClassName('unmatched_peak');
+	  for(var i = 0; elems.length > i; i++) {
+	    elems[i].style.display = 'none';
+	  }
 
-  var s = ids.split(",");
-  for (i = 0; s.length>i; i++) {
-    elems = document.getElementsByName(s[i]);
-    for(var j = 0; elems.length > j; j++) {
-      elems[j].style.display  =  "";
-      elems[j].style.background  =  "#BEECFF";
-    }
-  }
-  //$('div.dataTables_scrollBody').height(400);
+	 elems = document.getElementsByName(ids);
+	    for(var j = 0; elems.length > j; j++) {
+	      elems[j].style.display  =  "";
+	      elems[j].style.background  =  "#BEECFF";
+	    }
 }

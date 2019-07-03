@@ -1,27 +1,28 @@
-function proteoform_Url()
+/*	Create url to go back to all protein page and preoteins page */
+function proteoformUrl()
 {
+	/*	prsm_data is a global variable with the data from data file */
 	l_proteoform_Url = prsm_data.compatible_proteoform.sequence_name+" " +prsm_data.compatible_proteoform.sequence_description;
 	document.title = "Proteoform #"+prsm_data.compatible_proteoform.proteoform_id+" from " + l_proteoform_Url ;	
-	document.getElementsByName("protein_url")[0].innerHTML = l_proteoform_Url;
-	document.getElementsByName("protein_url")[0].href = "protein.html?protein_Id="+prsm_data.compatible_proteoform.sequence_id;
-	document.getElementsByName("protein_url")[1].innerHTML = l_proteoform_Url;
-	document.getElementsByName("protein_url")[1].href = "protein.html?protein_Id="+prsm_data.compatible_proteoform.sequence_id;
-	//Determinign the header of the HTML file
+	document.getElementById("protein_url_start").innerHTML = l_proteoform_Url;
+	document.getElementById("protein_url_start").href = "protein.html?protein_Id="+prsm_data.compatible_proteoform.sequence_id;
+	document.getElementById("protein_url_end").innerHTML = l_proteoform_Url;
+	document.getElementById("protein_url_end").href = "protein.html?protein_Id="+prsm_data.compatible_proteoform.sequence_id;
 	document.getElementById("proteoform_header").innerHTML ="Proteoform #"+prsm_data.compatible_proteoform.proteoform_id;
-	
+	/*	check if proteoform contain array of prsms */
 	if(Array.isArray(prsm_data.compatible_proteoform.prsm))
 	{
-		document.getElementById("prsm_count").innerHTML =prsm_data.compatible_proteoform.prsm.length+" PrSMs for this proteoform";
+		document.getElementById("prsm_count").innerHTML = prsm_data.compatible_proteoform.prsm.length+" PrSMs for this proteoform";
 	}
 	else
 	{
-		document.getElementById("prsm_count").innerHTML ="1 PrSM for this proteoform";
+		document.getElementById("prsm_count").innerHTML = "1 PrSM for this proteoform";
 	}
 }
-function createTable_data(){
-	
-	var table = document.getElementById('proteoform_data');
-	var tbdy = document.createElement('tbody');
+/*Create a table with prsm data and URL to navigate to appropriate prsm*/
+function createTableData(){
+	let table = document.getElementById('proteoform_data');
+	let tbdy = document.createElement('tbody');
 	let count = 0;
 	let sequence_name = prsm_data.compatible_proteoform.sequence_name ;
 	
@@ -52,12 +53,10 @@ function createTable_data(){
 					td.innerHTML = prsm.matched_fragment_number;
 				}
 				if(i === 6){
+					/*Create URL to navigate*/
 					let a = document.createElement('a')
-					l_onfocus = "cur = "+count +";selectRow();" ;
-					// unable to identify the link logic	
 					l_href = "prsm.html?prsm_id="+prsm.prsm_id;
 					l_link = "link" + (count +1) ;
-					a.setAttribute("onfocus",l_onfocus);
 					a.setAttribute("href", l_href);
 					a.setAttribute("id", l_link);
 					a.innerHTML = "See PrSM&gt;&gt;";
@@ -98,12 +97,10 @@ function createTable_data(){
 				td.innerHTML = prsm.matched_fragment_number;
 			}
 			if(i === 6){
+				/*Create link to navigate*/
 				let a = document.createElement('a')
-				l_onfocus = "cur = "+count +";selectRow();" ;
-				// unable to identify the link logic	
 				l_href = "prsm.html?prsm_id="+prsm.prsm_id;
 				l_link = "link" + (count +1) ;
-				a.setAttribute("onfocus",l_onfocus);
 				a.setAttribute("href", l_href);
 				a.setAttribute("id", l_link);
 				a.innerHTML = "See PrSM&gt;&gt;";
@@ -113,10 +110,7 @@ function createTable_data(){
 			tr.appendChild(td);
 		}
 		tbdy.appendChild(tr);
-		
 	}
-	
-	
 	
 	table.appendChild(tbdy);
 }
