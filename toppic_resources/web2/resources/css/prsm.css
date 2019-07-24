@@ -39,12 +39,17 @@ a{
 .btn-secondary{
 	background-color:  red !important;
 }
-
+button.close {
+   outline: none !important;
+   box-shadow: none !important;
+}
+.custom{
+	width: 10% !important;
+}
 .modal-header {
   min-height: 1.42857143px !important;
   padding: 5px !important;
   border-bottom: 0px solid #e5e5e5 !important;
-  
   }
 
 .modal2-header{
@@ -75,8 +80,16 @@ a{
 	margin-bottom: 0.5rem !important;
 }
 
-    
-
+.modal-sm {
+   	max-width: 50% !important;
+}    
+.btn-static {
+  background-color: white;
+  border: 1px solid lightgrey !important;
+  cursor: default !important;
+  outline: none !important;
+   box-shadow: none !important;
+}
 div.tooltip {
   box-sizing: border-box;
   display: inline-block;
@@ -91,17 +104,14 @@ div.tooltip {
 svg{
   font-family : 'FreeMono',Miltonian,monospace;
   font-size: 16px;
-  margin-left:auto;
-  margin-right:auto;
   display:block;
 }
-/* #click_resize{
-	border-right: 0px white solid !important;
-	cellpadding: 5px !important;
-} */
-/*
-@font-face {
-  font-family: "FreeMono";
-  src: url("FreeMono.ttf")
+svg.l_popup_svg{
+  font-family : 'FreeMono',Miltonian,monospace !important;
+  font-size: 16px !important;
+  margin-left:auto !important;
+  margin-right:auto !important ;
+  display:block !important;
 }
-*/
+
+

@@ -8,15 +8,14 @@
 <link rel="stylesheet" type="text/css" href="resources/css_lib/bootstrap.min.css">
 <script src="resources/js_lib/jQuery_3_4.js"></script>
 <script src="resources/js_lib/Bootstrap/bootstrap.min.js"></script>
-<script src="resources/js_lib/d3/d3.js"></script>
+<script src="http://d3js.org/d3.v4.min.js"></script>
 <script src="resources/js_lib/canvas-toBlob.js"></script>
-<script src="resources/js/FileSaver.js"></script>
 <script src="resources/js_lib/jquery.dataTables.js"></script>
-<script src="resources/js/coordinates_util.js"></script>
-<script src="resources/js/prsmtohtml.js"></script>
-<script src="resources/js/prsmToSVGDataUtility.js"></script>
-<script src="resources/js/prsm_2_svg.js"></script>
-<script src="resources/js/save_image.js"></script>
+<script src="resources/js/util/coordinates_util.js"></script>
+<script src="resources/js/prsm/prsmtohtml.js"></script>
+<script src="resources/js/util/prsmDataUtil.js"></script>
+<script src="resources/js/prsm/buttons.js"></script>
+<script src="resources/js/Monoisotopic_mass/drawMassShiftSvg.js"></script>
 <script src="resources/js/Monoisotopic_mass/aminoAcid.js"></script>
 <script src="resources/js/Monoisotopic_mass/theoreticalMass.js"></script>
 <script>
@@ -37,7 +36,7 @@ head.appendChild(script);
 var id = "l_svg" ;
 var script_prsm = document.createElement('script');
 script_prsm.type= 'text/javascript';
-script_prsm.src = "resources/js/prsm.js" ;
+script_prsm.src = "resources/js/prsm/prsm.js" ;
 var spec_id = null ;
 /* Call the functions onload of the data */
 script.onload = function () {
@@ -53,6 +52,8 @@ script.onload = function () {
 	[para,id] = buildSvg(para,prsm,id);
 	/*	Color the background of occurence of mass shift */
 	massShiftBackgroundColor(para,prsm,id);
+	
+	drawAcidonSVG(para,prsm,id);
 	/*	Get the amount of skipped acid and write the amount 
 	 * 	of skipped acid at the start and end of the sequence 
 	 */
@@ -79,61 +80,28 @@ script.onload = function () {
 	createTableElements();
 	/* New Changes */
  	//TheoreticalMass();
- 	peakCalData();
+ 	peakCalData(prsm);
  	//buttons();
- 	spec_id = prsm_data.prsm.ms.ms_header.ids ;
- 	console.log("spec_id : ", spec_id);
- 	var file_name = "data_js/spectrum/spectrum"+spec_id+".js";
- 	/* document.getElementById("spectrum_script").src = file_name; */
- 	var body= document.getElementsByTagName('body')[0];
- 	var script1= document.createElement('script');
- 	script1.src = file_name ;
- 	body.append(script1);
- 	script1.onload = function(){
- 		console.log("In Load");
- 		//buttons();
- 	}
 };
 </script>
-<style>
-		svg{
-			margin-left:auto;
-			margin-right:auto;
-			display:block;
-		}
-		div.tooltip {
-		  box-sizing: border-box;
-		  display: inline-block;
-		  min-width: 1.5em;
-		  padding: 2px;	
-		  margin-left: 0px;
-		  text-align: center;
-		  text-decoration: none !important;
-		  cursor: pointer;
-		  border: 1px solid #111111;	
-	}
-</style>
 </head>
 <body>
 <div class="container">
+<br><br>
 <div id="alignment" >
 <svg id = "l_svg" ></svg>
 <br>
 <table>
 <tr>
-	<td width = "90%">
+	<td width = "100%">
 		<div id="ptm_abbreviation" style="font-size:16px;">
 		<!-- Data will be retrieved form Fixed_PTM()   -->
 		</div>
 	<td>
-	<td width = "10%" align = "right">
-		<button id = "saveImage" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"  > Save prsm</button>
-	</td>
 </tr>
 </table>
 <br>
 </div>
-<svg id = "ms1svg" style = "display: none;" ></svg>
 <table>
 <tr>
 	<td width = "100%">
@@ -160,59 +128,6 @@ script.onload = function () {
       <a id = "protien_url_end" href = ""></a> / 
        <a id= "proteoform_url_end" href=""></a>
 </p>
-</div>
-<div class="container">
-<div class="modal" id="myModal" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header ">
-       <!-- Your first column here -->
-       	<h5 class="modal-title ml-auto"> SVG Resize</h5>
-      	<button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-       <div class="modal-header modal2-header pb-0">
-       		<table class="table table-sm table_modal">
-       			<tr>
-			      <td>Row Size:</td>
-			      <td><input id="row-size" type="text" size="9" ></td>
-			      <td>Letter Width:</td>
-			      <td><input id="letter-width" type="text" size="9"></td>
-			      <td>Row Height:</td>
-			      <td><input id="row-height" type="text" size="9"></td>
-			      <td>Block Width:</td>
-			      <td><input id="block-width" type="text" size="9"></td>
-			    </tr>
-			    <tr>
-			    	<td>Numerical Width:</td>
-			    	<td><input id="num-width" type="text" size="9" ></td>
-			    	<td>Show Numbers:</td>
-			    	<td>
-			    		<input type="radio" name="show-num" id = "show-num" >Yes
-			    		<input type="radio" name="show-num" id = "show-num" >No
-			    	</td>
-			    	<td>Show Skipped Information:</td>
-			    	<td>
-			    		<input type="radio" name="show-skipped-lines" id= "show-skipped-lines">Yes
-			    		<input type="radio" name="show-skipped-lines" id= "show-skipped-lines">No
-			    	</td>
-			    	<td colspan="2"  align="right">
-			    		 <button type = "button" class="btn btn-primary btn-sm "  id = "resize" >Click to Resize</button>
-			    	</td>
-			    	
-			    </tr>
-       		</table>
-       	</div>
-      <div class="modal-body">
-        <svg id = "l_popup_svg"></svg>
-      </div>
-      <div class="modal-footer">
-      		<button type="button" class="btn btn-primary btn-sm" id = "download_PNG" >Save as PNG</button>
-      		<button type="button" class="btn btn-primary btn-sm " id = "download_SVG" >Save as SVG</button>
-         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 </div>
 </body>
 </html>

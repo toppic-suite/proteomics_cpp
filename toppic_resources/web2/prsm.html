@@ -10,21 +10,19 @@
 <script src="resources/js_lib/Bootstrap/bootstrap.min.js"></script>
 <script src="resources/js_lib/d3/d3.js"></script>
 <script src="resources/js_lib/canvas-toBlob.js"></script>
-<script src="resources/js/FileSaver.js"></script>
+<script src="resources/js/prsm/FileSaver.js"></script>
 <script src="resources/js_lib/jquery.dataTables.js"></script>
-<script src="resources/js/coordinates_util.js"></script>
-<script src="resources/js/prsmtohtml.js"></script>
-<script src="resources/js/prsmToSVGDataUtility.js"></script>
-<script src="resources/js/prsm_2_svg.js"></script>
-<script src="resources/js/save_image.js"></script>
-<script src="resources/js/invokeSpectrum.js"></script>
-<script src="resources/js/spectrumPoints.js"></script>
-<script src="resources/js/buttons.js"></script>
-<script src="resources/js/dataSource.js"></script>
-<script id = "spectrum_script" src="data_js/spectrum/spectrum0.js" ></script>
-<!-- New Changes -->
-<script src="resources/js/Monoisotopic_mass/aminoAcid.js"></script>
-<script src="resources/js/Monoisotopic_mass/theoreticalMass.js"></script>
+<script src="resources/js/util/coordinates_util.js"></script>
+<script src="resources/js/prsm/prsmtohtml.js"></script>
+<script src="resources/js/util/prsmDataUtil.js"></script>
+<script src="resources/js/util/drawSvg.js"></script>
+<script src="resources/js/prsm/saveImage.js"></script>
+<script src="resources/js/spectrum/peakData.js"></script>
+<script src="resources/js/spectrum/invokeSpectrum.js"></script>
+<script src="resources/js/spectrum/spectrumParameters.js"></script>
+<script src="resources/js/spectrum/spectrumGraph.js"></script>
+<script src="resources/js/prsm/buttons.js"></script>
+<script id = "spectrum_script" src="" ></script>
 <script>
 var head= document.getElementsByTagName('head')[0];
 var script= document.createElement('script');
@@ -43,7 +41,7 @@ head.appendChild(script);
 var id = "l_svg" ;
 var script_prsm = document.createElement('script');
 script_prsm.type= 'text/javascript';
-script_prsm.src = "resources/js/prsm.js" ;
+script_prsm.src = "resources/js/prsm/prsm.js" ;
 var spec_id = null ;
 /* Call the functions onload of the data */
 script.onload = function () {
@@ -84,11 +82,8 @@ script.onload = function () {
 	/* Create peaks data into table content */
 	createTableElements();
 	/* New Changes */
- 	//TheoreticalMass();
- 	//peakCalData();
- 	//buttons();
+ 	
  	spec_id = prsm_data.prsm.ms.ms_header.ids ;
- 	console.log("spec_id : ", spec_id);
  	var file_name = "data_js/spectrum/spectrum"+spec_id+".js";
  	/* document.getElementById("spectrum_script").src = file_name; */
  	var body= document.getElementsByTagName('body')[0];
@@ -96,9 +91,10 @@ script.onload = function () {
  	script1.src = file_name ;
  	body.append(script1);
  	script1.onload = function(){
- 		console.log("In Load");
  		buttons();
- 	}
+    //var spectrumGraph = addSpectrum();
+  }
+
 };
 </script>
 </head>
@@ -109,7 +105,8 @@ script.onload = function () {
       <a id = "protien_url" href = "#"></a> / 
       <a id= "proteoform_url" href="#"></a>
 </p>
-<h2 id = "Protein-Spectrum-Match-Id-SpecId"></h2>
+<h2 id = "Protein-Spectrum-Match-Id-SpecId" ></h2>
+
 <table id = "_width_table" class="table table-borderless" style="font-size:15px">
 <tr>
 <td>File name:</td><td id = 'File_name' ></td>																
@@ -131,21 +128,21 @@ script.onload = function () {
 <svg id = "l_svg" ></svg>
 <table>
 <tr>
-	<td width = "90%">
+	<td width = "85%">
 		<div id="ptm_abbreviation" style="font-size:16px;">
 		<!-- Data will be retrieved form Fixed_PTM()   -->
 		</div>
 	<td>
-	<td width = "10%" align = "right">
-		<button id = "saveImage" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"  > Save prsm</button>
+	<td width = "15%" align = "right">
+		<button id = "saveImage" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" style="width:80%" > Save Prsm</button>
 	</td>
 </tr>
 </table>
 </div>
-<svg id = "ms1svg" style = "display: none;" ></svg>
+<svg id = "ms1svg" style = "display: none;"></svg>
 <table>
 <tr>
-	<td width = "70%">
+	<td width = "55%">
 		<div class = "peaks" style="font-size:16px;">
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id = "all_peak_count" href="#spectrum" onclick="showAllPeaks();"  >All peaks </a>
 		&nbsp;&nbsp;<a id = "matched_peak_count" href="#spectrum" onclick="showMatchedPeaks();">Matched peaks </a>
@@ -153,10 +150,16 @@ script.onload = function () {
 		</div>
 	<td>
 	<td width = "15%" align = "right">
-		<a id = "a_download_spectrum" href="#"><button type ="button"  id = "download_spectrum" class="btn btn-primary btn-sm" style = "display: none">Save Spectrum</button></a>
+		<a id = "a_spectrum_help" href="#!">
+			<button type ="button" id = "spectrum_help" class="btn btn-primary btn-sm" style = "display:none;width:80%" data-toggle="modal" data-target="#spectrumHelp">? Help</button>
+		</a>
 	</td>
 	<td width = "15%" align = "right">
-		<a id = "a_show_spectrum" href="#"><button type ="button"  id = "show_spectrum" class="btn btn-primary btn-sm">Show Spectrum</button></a>
+		<a id = "a_download_spectrum" href="#!"><button type ="button"  id = "download_spectrum" class="btn btn-primary btn-sm" style = "display: none;width:80%" >Save Spectrum</button></a>
+	</td>
+	
+	<td width = "15%" align = "right">
+		<a id = "a_show_spectrum" href="#!"><button type ="button"  id = "show_spectrum" class="btn btn-primary btn-sm" style="width:80%">Show Spectrum</button></a>
 	</td>
 </tr>
 </table>
@@ -185,43 +188,91 @@ script.onload = function () {
        <div class="modal-header modal2-header pb-0">
        		<table class="table table-sm table_modal">
        			<tr>
-			      <td>Row Size:</td>
+			      <td>AAs per Row:</td>
 			      <td><input id="row-size" type="text" size="9" ></td>
 			      <td>Letter Width:</td>
 			      <td><input id="letter-width" type="text" size="9"></td>
 			      <td>Row Height:</td>
 			      <td><input id="row-height" type="text" size="9"></td>
-			      <td>Block Width:</td>
+			      <td>Block Gap:</td>
 			      <td><input id="block-width" type="text" size="9"></td>
 			    </tr>
 			    <tr>
-			    	<td>Numerical Width:</td>
+			    	<td>Numerical Gap:</td>
 			    	<td><input id="num-width" type="text" size="9" ></td>
 			    	<td>Show Numbers:</td>
 			    	<td>
 			    		<input type="radio" name="show-num" id = "show-num" >Yes
 			    		<input type="radio" name="show-num" id = "show-num" >No
 			    	</td>
-			    	<td>Show Skipped Information:</td>
+			    	<td>Show Skipping Information:</td>
 			    	<td>
 			    		<input type="radio" name="show-skipped-lines" id= "show-skipped-lines">Yes
 			    		<input type="radio" name="show-skipped-lines" id= "show-skipped-lines">No
 			    	</td>
-			    	<td colspan="2"  align="right">
-			    		 <button type = "button" class="btn btn-primary btn-sm "  id = "resize" >Click to Resize</button>
+					<td>White b/g: <input type="radio" name="svg_background" id = "svg_background" >Yes
+			    		<input type="radio" name="svg_background" id = "svg_background" >No
+					</td>
+			    	<td>
+			    		 <button type = "button" class="btn btn-primary btn-sm "  id = "resize" style="width:77%" >Resize</button>
 			    	</td>
 			    	
 			    </tr>
        		</table>
        	</div>
       <div class="modal-body">
-        <svg id = "l_popup_svg"></svg>
+        <svg id = "l_popup_svg" class="l_popup_svg"></svg>
       </div>
       <div class="modal-footer">
-      		<button type="button" class="btn btn-primary btn-sm" id = "download_PNG" >Save as PNG</button>
-      		<button type="button" class="btn btn-primary btn-sm " id = "download_SVG" >Save as SVG</button>
+			<button class="btn btn-primary btn-sm custom "  id="help" data-toggle="modal" data-target="#helpModal">? Help</button>
+      		<button type="button" class="btn btn-primary btn-sm custom " id = "download_PNG" >Save as PNG</button>
+      		<button type="button" class="btn btn-primary btn-sm custom " id = "download_SVG" >Save as SVG</button>
          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="helpModal" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+    	<div class="modal-header ">
+      	<button type="button" class="close" data-dismiss="modal">&times;</button>
+      	</div>
+  		 <div class="modal-body">
+  		 	<ul>
+			  <li>Please click on the <button class="btn btn-static btn-sm">Save Prsm</button> button to save the prsm svg as "png" and "svg".</li>
+		   		<li>Change the number of acids per row by changing "AAs per Row".</li>
+		   		<li>Change the gap width between two acids by changing "Letter Width".</li>
+		   		<li>Change the gap between two rows by changing the "Row Height".</li>
+			  	<li>Change the gap between two blocks of acids of 10 each by changing "Block Gap".</li>
+			  	<li>Change the gap width between numbers and Acids by changing "Numerical Gap".</li>
+			  	<li>Remove the Numerical notation of the sequences by clicking "no" to "Show Numbers".</li>
+			  	<li>Remove the Skipping information clicking "no" to "Show Skipping Information".</li>
+			  	<li>Remove white background to the image by clicking "no" "White b/g".</li>
+			  	<li>Click on resize button to effect changes made to the svg <button class="btn btn-static btn-sm">Click to Resize</button>.</li>
+			  	<li>Please click on the <button class="btn btn-static btn-sm">Save as PNG</button> button to save the prsm svg as "png".</li>
+			  <li>Please click on the <button class="btn btn-static btn-sm">Save as SVG</button> button to save the prsm svg as "svg".</li>
+			  <br>
+			</ul> 
+  		 </div> 
+    </div>
+  </div>
+</div>
+<div class="modal" id="spectrumHelp" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+    	<div class="modal-header ">
+      	<button type="button" class="close" data-dismiss="modal">&times;</button>
+      	</div>
+  		 <div class="modal-body">
+  		 	<ul>
+			  <li>Please click on <button class="btn btn-static btn-sm">Save Spectrum</button> button to download the image as "svg". </li>
+			  <li>Place mouse "on x-axis" and zoom to zoom the x axis. </li>
+			   <li>Place mouse "above x-axis" and zoom to zoom the y axis. </li>
+			   <li>Drag "spectrum graph" by dragging at any part of the graph. </li>
+			</ul> 
+  		 </div> 
     </div>
   </div>
 </div>
