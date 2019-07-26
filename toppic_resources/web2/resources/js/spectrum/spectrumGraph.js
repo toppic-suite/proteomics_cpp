@@ -241,7 +241,7 @@ onMouseOverPeak = function(this_element,svg,peak,spectrumParameters)
 {
 	let x = spectrumParameters.getPeakXPos(peak.mz);
 	let y = spectrumParameters.getPeakYPos(peak.intensity);
-	intensity ="I:"+ parseFloat(peak.intensity).toFixed(3);
+	intensity =" I:"+ parseFloat(peak.intensity).toFixed(3);
 	mz = "M:"+parseFloat(peak.mz).toFixed(3);
 	y = y - spectrumParameters.mouseOverPadding.head ;
 	if(y<=spectrumParameters.mouseOverPadding.head)
@@ -250,18 +250,18 @@ onMouseOverPeak = function(this_element,svg,peak,spectrumParameters)
 	}
 	d3.select(this_element).style("stroke","red")
 							.style("stroke-width","2");
-							
-	svg.append("text").attr("id","MyTextMZ")
-							.attr("x", x)
-							.attr("y",y)
-							.attr("font-size","18px")
-							.text(mz);
-							
-	svg.append("text").attr("id","MyTextIN")
-							.attr("x", x)
-							.attr("y",y + spectrumParameters.mouseOverPadding.middle)
-							.attr("font-size","18px")
-							.text(intensity);
+	
+	let tooltipData = mz + "<br>" + intensity ;						
+	/*	Rectangle to have flexible on click and on mouse actions	*/
+	var div = d3.select("body").append("div")
+							.attr("id", "MyTextMZIN")	
+							.attr("class", "tooltip")				
+	div.transition().duration(10)	
+					.style("opacity", 2);
+	div.html(tooltipData).style("left", (d3.event.pageX + 12)  + "px")		
+				.style("top", (d3.event.pageY - 28)+ "px")
+				.style("fill", "black")
+				//.style("font-weight","bold");
 }
 onMouseOverCircle = function(this_element,svg,envelope_list,spectrumParameters)
 {
@@ -274,17 +274,17 @@ onMouseOverCircle = function(this_element,svg,envelope_list,spectrumParameters)
 	{
 		y = spectrumParameters.mouseOverPadding.head;
 	}
-	svg.append("text").attr("id","MyTextMass")
-							.attr("x", x)
-							.attr("y",y)
-							.attr("font-size","18px")
-							.text(mass);
-							
-	svg.append("text").attr("id","MyTextCharge")
-							.attr("x", x)
-							.attr("y",y + spectrumParameters.mouseOverPadding.middle)
-							.attr("font-size","18px")
-							.text(charge);
+	
+	let tooltipData = mass + "<br>" + charge ;						
+	/*	Rectangle to have flexible on click and on mouse actions	*/
+	var div = d3.select("body").append("div")
+							.attr("id", "MyTextMassCharge")	
+							.attr("class", "tooltip")				
+	div.transition().duration(10)	
+					.style("opacity", 2);
+	div.html(tooltipData).style("left", (d3.event.pageX + 12)  + "px")		
+				.style("top", (d3.event.pageY - 28)+ "px")
+				.style("fill", "black");
 }
 onPeakMouseOut = function(this_element)
 {
@@ -295,10 +295,8 @@ onCircleMouseOut= function(){
 	onMouseOut();
 }
 onMouseOut = function(){
-	d3.selectAll("#MyTextMZ").remove();
-	d3.selectAll("#MyTextIN").remove();
-	d3.selectAll("#MyTextMass").remove();
-	d3.selectAll("#MyTextCharge").remove();
+	d3.selectAll("#MyTextMZIN").remove();
+	d3.selectAll("#MyTextMassCharge").remove();
 }
 function drawSpectrum(svgId, spectrumParameters, peakData){
   let svg = d3.select("body").select(svgId);

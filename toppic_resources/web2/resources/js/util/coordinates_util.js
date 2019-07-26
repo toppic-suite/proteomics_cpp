@@ -8,13 +8,13 @@ function parameters()
 	this.row_height = 40;
 	this.top_margin = 35;
 	this.bottom_margin = 10 ;
-	this.right_margin = 40;
+	this.right_margin = 50;
 	this.left_margin = 40;
 	this.numerical_width = 20;
 	this.show_num = true ;
 	this.show_skipped_lines = true ;
 	this.skip_line_height = 40;
-	this.buffer_width = 10 ;
+	this.font_width = 9 ;//12px font with = 9pt
 	this.background_color = "#64E9EC";
 	this.svgBackground_color = "white" ;
 }	
@@ -51,7 +51,7 @@ function calibrateRightNum(para,position,start_value)
 {
   let x = para.left_margin + para.numerical_width + (para.row_length - 1 ) * para.letter_width;
   //buffer width-anno_width to make left and right numbers symmetrical as left numbers are left aligned 
-  x = x + ((para.row_length/ para.block_length) - 1) * para.gap_width + para.numerical_width + para.buffer_width; 
+  x = x + ((para.row_length/ para.block_length) - 1) * para.gap_width + para.numerical_width + para.font_width; 
   let y = getY(para, position, start_value);
   return [x,y];
 }

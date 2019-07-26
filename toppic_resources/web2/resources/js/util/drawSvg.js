@@ -30,11 +30,7 @@ function getNumOfRows(parameters,prsm)
 	{
 		num_of_rows = parseInt(num_of_rows) ;
 	}*/
-	/*if(start_info != null && parameters.show_skipped_lines)
-	{
-		skip_acid_count = skip_acid_count ;
-	}*/
-	if(end_info != null && parameters.show_skipped_lines )
+	if((start_info != null || end_info != null)&& parameters.show_skipped_lines)
 	{
 		skip_acid_count = skip_acid_count + 1;
 	}
@@ -46,6 +42,13 @@ function buildSvg(parameters,prsm,id)
 {
 	let first_residue_position = parseInt(prsm.annotated_protein.annotation.first_residue_position) ;
 	let last_residue_position = parseInt(prsm.annotated_protein.annotation.last_residue_position) ;
+	let seqlength = parseInt(prsm.annotated_protein.annotation.protein_length) ;
+	/*Accomodate large numerical number at the start and end of the sequence without getting trimmed by adding extra margin values*/
+	if(seqlength >= 1000)
+	{
+		parameters.left_margin = parameters.left_margin + parameters.font_width ;
+		parameters.right_margin = parameters.right_margin + parameters.font_width ;
+	}
 	let width,height ;
 	[width,height] = getSvgSize(parameters,prsm,first_residue_position,last_residue_position) ;
 	/*create a group under svg with svgId_g*/
@@ -55,15 +58,14 @@ function buildSvg(parameters,prsm,id)
 									.attr("font-family","'FreeMono',Miltonian,monospace")
 									.attr("font-size","16px")
 									.style("fill", parameters.svgBackground_color)
-									
 	svgContainer = svgContainer.append("g")
 								.attr("id",id_temp)
 								.attr("class",id_temp);
-								
 	text = 	svgContainer.selectAll("text");
 	let first_position,last_position,start_info = null ,end_info = null ;
 	/*	Get the new first and last position based on the amount of acids are needed to be skipped */
 	[parameters,first_position, last_position,start_info,end_info] = skip_list(parameters,prsm);
+	
 	prsm.annotated_protein.annotation.residue.forEach(function(input,index){
 		if(parseInt(input.position) >= first_position && parseInt(input.position) < last_position )
 		{
@@ -117,6 +119,7 @@ function skippedAcidNotification(parameters,prsm,id)
 			svgContainer.append("text")
 				.attr("x", x)
 				.attr("y", y)
+				.style("fill","black")
 				.text(start_info);
 		}
 		if(end_info != null)
@@ -126,6 +129,7 @@ function skippedAcidNotification(parameters,prsm,id)
 			svgContainer.append("text")
 			.attr("x", x)
 			.attr("y", y)
+			.style("fill","black")
 			.text(end_info) ;
 		}
 	}
@@ -262,8 +266,11 @@ function drawAnnotation(annotation,l_charge,id,coordinates,x,y)
 					.style("opacity", 0)
 					.attr("cursor", "pointer")
 					.on("click",function(){
-						input = annotation.ion_position;
-						showIonPeaks(input);
+						if(id == "l_svg")
+						{
+							input = annotation.ion_position;
+							showIonPeaks(input);
+						}
 					})
 					.on("mouseover", function(){
 						console.log("in mouse over");
@@ -315,7 +322,7 @@ function skip_list(para,prsm)
 	}
 	else if(l_alast_residue_position+1 < l_asequence_length)
 	{
-		new_last_position = l_asequence_length-1;
+		new_last_position = l_asequence_length ;
 	}
 	return[para,new_first_position,new_last_position,start_info,end_info];
 }

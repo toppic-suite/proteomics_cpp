@@ -91,6 +91,7 @@ button.close {
    box-shadow: none !important;
 }
 div.tooltip {
+	
   box-sizing: border-box;
   display: inline-block;
   min-width: 1.5em;
@@ -100,6 +101,8 @@ div.tooltip {
   text-decoration: none !important;
   cursor: pointer;
   border: 1px solid #111111;	
+	background-color: white;
+  background: white;
 }
 svg{
   font-family : 'FreeMono',Miltonian,monospace;
@@ -113,5 +116,10 @@ svg.l_popup_svg{
   margin-right:auto !important ;
   display:block !important;
 }
-
+#MyTextMZIN,#MyTextMassCharge{
+	
+	line-height: 1.1;
+	font-size: 18px !important;
+	text-align: left !important;
+}
 

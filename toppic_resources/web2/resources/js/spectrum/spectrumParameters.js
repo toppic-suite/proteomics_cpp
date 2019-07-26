@@ -24,7 +24,7 @@ SpectrumParameters = function(peakdata) {
   this.specX = 0;
 
   /*	Colors for the envelope circles	*/
-  this.spectrumColorArray = ["red","orange","blue","black"]
+  this.spectrumColorArray = ["red","orange","blue","green"]
   /*	Radius factor and setting min and max radius	*/
   this.mzRadius = 0.05;
   this.minRadius = 2;
