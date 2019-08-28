@@ -33,6 +33,7 @@ this.addSpectrum = function(monoMZ){
 		}
 	}
 	specParameters.initScale(currminMz,currmaxMz,maxIntensity,minIntensity,minMzData,maxMzData,currentMaxIntensity);
+	console.log("peakdata : ",peakdata);
 	let spectrumgraph = new SpectrumGraph("#ms1svg",specParameters,peakdata);
 
   return spectrumgraph;

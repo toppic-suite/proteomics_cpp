@@ -167,8 +167,8 @@ function CalmassError(thMassList,monoMassList,thresholdVal){
 			{
 				let calculatedData = {} ;
 				/*add 1 as the peak id start from one where as othe positions start from 0*/
-				calculatedData.peak_id = parseInt(monoMassList[i].peak_id) + 1 ;
-				calculatedData.massError = monoMassList[i].monoisotopic_mass - thMassList[j].mass;
+				calculatedData.peak_rid = parseInt(monoMassList[i].peak_id) + 1 ;
+				calculatedData.massEror = monoMassList[i].monoisotopic_mass - thMassList[j].mass;
 				calculatedData.thMass = thMassList[j].mass ;
 				calculatedData.position = thMassList[j].position ;
 				calculatedData.monoisotopic_mass = monoMassList[i].monoisotopic_mass ;

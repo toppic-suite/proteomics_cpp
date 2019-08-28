@@ -6,12 +6,12 @@ function protein(){
 	if(Array.isArray(prsm_data.protein.compatible_proteoform))
 	{
 		prsm_data.protein.compatible_proteoform.forEach(function(compatible_proteoform,index){
-			proteoformToHtml(compatible_proteoform,index)
+			proteoformToHtml(compatible_proteoform,index);
 		})
 	}
 	else
 	{
-		proteoformToHtml(prsm_data.protein.compatible_proteoform,0)
+		proteoformToHtml(prsm_data.protein.compatible_proteoform,0);
 	}
 }
 /*	Get best prsm and build HTML tags */
@@ -98,21 +98,13 @@ function getBestPrsm(prsm)
 	let e_value = " " ;
 	let precursor_mass = " " ;
 	let prsm_id = "";
-	let temp = 0;
-	temp = parseFloat(prsm[0].e_value);
+	let temp = parseFloat(prsm[0].e_value);
+	e_value = prsm[0].e_value;
+	precursor_mass = prsm[0].ms.ms_header.precursor_mono_mass;
+	prsm_id = prsm[0].prsm_id;
 	for(let i = 1 ; i < (prsm.length) ; i++)
 	{
-		if(temp < parseFloat(prsm[i].e_value))
-		{
-			temp = temp ;
-			if(i == 1)
-			{
-				e_value = prsm[0].e_value;
-				precursor_mass = prsm[0].ms.ms_header.precursor_mono_mass;
-				prsm_id = prsm[0].prsm_id;
-			}
-		}
-		else
+		if(temp >= parseFloat(prsm[i].e_value))
 		{
 			temp = parseFloat(prsm[i].e_value)
 			e_value = prsm[i].e_value;

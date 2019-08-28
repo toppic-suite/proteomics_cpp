@@ -3,7 +3,7 @@
 PeakData = function() {
 this.peak_list = [];
 this.envelope_list = [];
-this.circleColor_list = ["red","orange","blue","black"];
+this.circleColor_list = ["red","orange","blue","green"];
 this.maxPeakIntensity;
 this.maxMz;
 

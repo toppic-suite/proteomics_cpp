@@ -184,6 +184,20 @@ function getNumValues(para,prsm,id)
 						return null ;
 					})
 					.style("fill", "black");
+				
+				if(parseInt(l_position_temp) == (last_position-1) && last_position%(para.row_length) ==  1)
+				{
+					[x,y] = calibrateRightNum(para,parseInt(l_position_temp),first_position) ;
+					id_temp = "right_align" ;
+					svgContainer.append("text")
+					.attr("id", id_temp)
+					.attr("x",x)
+					.attr("y",y)
+					.text(function(d,i){
+						return position ;
+					})
+					.style("fill", "black");
+				}
 			}
 		}
 	})
