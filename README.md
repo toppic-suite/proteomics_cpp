@@ -40,15 +40,15 @@ make -j$(nproc)
 # add the folder toppic_resources to the folder toppic_suite_1.x.x/bin
 cd ../bin
 ln -s ../toppic_resources .
-```sh
+```
 
-# On some Linux distributions, you might meet the problem "Could not loading a transcoding service".
-# To fix this, please add following lines into your `.bashrc`.
+On some Linux distributions, you might meet the problem "Could not loading a transcoding service".
+To fix this, please add following lines into your `.bashrc`.
 ```sh
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-```sh
+```
 
 ### Windows:
 
