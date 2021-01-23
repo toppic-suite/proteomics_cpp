@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 #include <cmath>
 #include <string>
 
-#include "prsm/prsm_para.hpp"
+#include "para/prsm_para.hpp"
 
 namespace toppic {
 
@@ -33,6 +33,7 @@ class GraphAlignMng {
                 int var_ptm_in_gap,
                 double max_ptm_mass,
                 int thread_num,
+                bool whole_protein_only,
                 const std::string & input_file_ext,
                 const std::string & output_file_ext):
       prsm_para_ptr_(prsm_para_ptr),
@@ -43,6 +44,7 @@ class GraphAlignMng {
       var_ptm_in_gap_(var_ptm_in_gap),
       max_ptm_mass_(max_ptm_mass),
       thread_num_(thread_num),
+      whole_protein_only_(whole_protein_only),
       input_file_ext_(input_file_ext),
       output_file_ext_(output_file_ext) {}
 
@@ -82,6 +84,8 @@ class GraphAlignMng {
   double max_ptm_mass_ = 500;
 
   int thread_num_ = 1;
+
+  bool whole_protein_only_ = false;
 
   std::string input_file_ext_;
 

@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -68,10 +68,11 @@ void addMsHeader(XmlDOMDocument* xml_doc, xercesc::DOMElement* ms_element,
   std::string ms1_ids, ms2_ids;
   std::string ms1_scans, ms2_scans;
   for (size_t i = 0; i < deconv_ms_ptr_vec.size(); i++) {
-    ms1_ids = ms1_ids + str_util::toString(deconv_ms_ptr_vec[i]->getMsHeaderPtr()->getMsOneId()) + " ";
-    ms1_scans = ms1_scans + str_util::toString(deconv_ms_ptr_vec[i]->getMsHeaderPtr()->getMsOneScan()) + " ";
-    ms2_ids = ms2_ids + str_util::toString(deconv_ms_ptr_vec[i]->getMsHeaderPtr()->getId()) + " ";
-    ms2_scans = ms2_scans + deconv_ms_ptr_vec[i]->getMsHeaderPtr()->getScansString() + " ";
+    MsHeaderPtr header_ptr = deconv_ms_ptr_vec[i]->getMsHeaderPtr();
+    ms1_ids = ms1_ids + str_util::toString(header_ptr->getMsOneId()) + " ";
+    ms1_scans = ms1_scans + str_util::toString(header_ptr->getMsOneScan()) + " ";
+    ms2_ids = ms2_ids + str_util::toString(header_ptr->getId()) + " ";
+    ms2_scans = ms2_scans + header_ptr->getScansString() + " ";
   }
   str_util::trim(ms1_ids);
   str_util::trim(ms1_scans);
@@ -96,10 +97,10 @@ void addMsHeader(XmlDOMDocument* xml_doc, xercesc::DOMElement* ms_element,
   str = str_util::fixedToString(precursor_mz, pos);
   xml_doc->addElement(ms_header_element, "precursor_mz", str.c_str());
 
-  double precursor_inte = prsm_ptr->getPrecFeatureInte();
-  if (precursor_inte > 0) {
-    str = str_util::toScientificStr(precursor_inte, pos);
-    xml_doc->addElement(ms_header_element, "precursor_inte", str.c_str());
+  double feature_inte = prsm_ptr->getSampleFeatureInte();
+  if (feature_inte > 0) {
+    str = str_util::toScientificStr(feature_inte, pos);
+    xml_doc->addElement(ms_header_element, "feature_inte", str.c_str());
   }
 }
 

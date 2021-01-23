@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ namespace toppic {
 class AnnoMassShift {
  public:
   AnnoMassShift(int id, int left_pos, int right_pos, 
+                double mass_shift,
                 const std::string & anno_str, 
                 AlterTypePtr & mass_shift_type);
 
@@ -37,6 +38,8 @@ class AnnoMassShift {
   int left_pos_;
 
   int right_pos_;
+
+  double mass_shift_;
 
   std::string anno_str_;
 

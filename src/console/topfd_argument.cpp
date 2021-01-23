@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
 #include <iostream>
 #include <iomanip>
 
+#include "boost/thread/thread.hpp"
 #include "common/util/version.hpp"
 #include "common/util/logger.hpp"
 #include "common/util/file_util.hpp"
 #include "common/util/time_util.hpp"
+#include "common/util/custom_exception.hpp"
 #include "console/topfd_argument.hpp"
 
 namespace toppic {
@@ -40,6 +42,8 @@ bool Argument::parse(int argc, char* argv[]) {
   std::string ms_one_sn_ratio = "";
   std::string prec_window = "";
   std::string merged_file_name = "";
+  std::string thread_number = "";
+  std::string activation = "";
 
   // Define and parse the program options
   try {
@@ -48,24 +52,31 @@ bool Argument::parse(int argc, char* argv[]) {
 
     display_desc.add_options()
         ("help,h", "Print this help message.")
+        ("activation,a", po::value<std::string> (&activation),
+        "<CID|HCD|ETD|UVPD|FILE>. Fragmentation method of tandem mass spectra. When FILE is used, fragmentation methods of spectra are given in the input spectral data file. Default value: FILE.")
         ("max-charge,c", po::value<std::string> (&max_charge),
          "<a positive integer>. Set the maximum charge state of precursor and fragment ions. The default value is 30.")
         ("max-mass,m", po::value<std::string> (&max_mass),
-         "<a positive number>. Set the maximum monoisotopic mass of precursor and fragment ions. The default value is 100000 Dalton.")
+         "<a positive number>. Set the maximum monoisotopic mass of precursor and fragment ions. The default value is 100,000 Dalton.")
         ("mz-error,e", po::value<std::string> (&mz_error),
          "<a positive number>. Set the error tolerance of m/z values of spectral peaks. The default value is 0.02 m/z.")
         ("ms-one-sn-ratio,r", po::value<std::string> (&ms_one_sn_ratio),
-         "<a positive number>. Set the signal/noise ratio for MS1 spectra. The default value is 3.")
+         "<a positive number>. Set the signal-to-noise ratio for MS1 spectra. The default value is 3.")
         ("ms-two-sn-ratio,t", po::value<std::string> (&ms_two_sn_ratio),
-         "<a positive number>. Set the signal/noise ratio for MS/MS spectra. The default value is 1.")
+         "<a positive number>. Set the signal-to-noise ratio for MS/MS spectra. The default value is 1.")
         ("precursor-window,w", po::value<std::string> (&prec_window),
          "<a positive number>. Set the precursor window size. The default value is 3.0 m/z.")
-        ("missing-level-one,o","The input spectrum file does not contain MS1 spectra.")
+        ("env-cnn,n", "Use EnvCNN as the scoring function of isotopic envelopes.")
+        ("missing-level-one,o","MS1 spectra are missing in the input file.")
+        ("thread-number,u", po::value<std::string> (&thread_number), "<a positive integer>. Number of threads used in spectral deconvolution. Default value: 1.")
+        ("skip-html-folder,g","Skip the generation of html files for the visualization of spectra and identifications.")
+        ("disable-final-filtering,d","Skip the final filtering of envelopes.")
         ;
 
     po::options_description desc("Options");
     desc.add_options() 
         ("help,h", "Print this help message.") 
+        ("activation,a", po::value<std::string> (&activation), "")
         ("max-charge,c", po::value<std::string> (&max_charge), "")
         ("max-mass,m", po::value<std::string> (&max_mass), "")
         ("mz-error,e", po::value<std::string> (&mz_error), "")
@@ -73,12 +84,15 @@ bool Argument::parse(int argc, char* argv[]) {
         ("ms-two-sn-ratio,t", po::value<std::string> (&ms_two_sn_ratio), "")
         ("precursor-window,w", po::value<std::string> (&prec_window), "")
         ("missing-level-one,o", "")
-        ("multiple-mass,u", "Output multiple masses for one envelope.")
+        ("thread-number,u", po::value<std::string> (&thread_number), "")
+        ("skip-html-folder,g","")
         ("keep,k", "Report monoisotopic masses extracted from low quality isotopic envelopes.")
+        ("env-cnn,n", "")
         ("merged-file-name,f", po::value<std::string> (&merged_file_name), 
          "Merge deconvoluted files and specify the name of the merged file.")
         ("spectrum-file-name", po::value<std::vector<std::string> >()->multitoken()->required(), 
          "Spectrum file name with its path.")
+         ("disable-final-filtering,d", "")
         ;
 
     po::positional_options_description positional_options;
@@ -86,7 +100,8 @@ bool Argument::parse(int argc, char* argv[]) {
 
     po::variables_map vm;
     try {
-      po::store(po::command_line_parser(argc, argv).options(desc).positional(positional_options).run(), vm);
+      po::store(
+          po::command_line_parser(argc, argv).options(desc).positional(positional_options).run(), vm);
       if (vm.count("help")) {
         showUsage(display_desc);
         return false;
@@ -111,12 +126,20 @@ bool Argument::parse(int argc, char* argv[]) {
 
     topfd_para_ptr_->resource_dir_ = file_util::getResourceDir(exec_dir);
 
+    if (vm.count("activation")) {
+      topfd_para_ptr_->activation_ = activation;
+    }
+
     if (vm.count("max-charge")) {
       topfd_para_ptr_->max_charge_ = std::stoi(max_charge);
     }
 
     if (vm.count("keep")) {
       topfd_para_ptr_->keep_unused_peaks_ = true;
+    }
+
+    if (vm.count("env-cnn")) {
+      topfd_para_ptr_->use_env_cnn_ = true;
     }
 
     if (vm.count("max-mass")) {
@@ -157,6 +180,15 @@ bool Argument::parse(int argc, char* argv[]) {
         topfd_para_ptr_->merged_file_name_ = merged_file_name;
       }
     }
+    if (vm.count("thread-number")) {
+      topfd_para_ptr_->thread_number_ = std::stoi(thread_number);
+    }
+    if (vm.count("skip-html-folder")) {
+      topfd_para_ptr_->gene_html_folder_ = false;
+    }
+    if (vm.count("disable-final-filtering")) {
+      topfd_para_ptr_->do_final_filtering_ = false;
+    }
   }
   catch(std::exception& e) {
     std::cerr << "Unhandled Exception in parsing command line "
@@ -179,6 +211,30 @@ bool Argument::validateArguments() {
       return false;
     }
   }
+  int thread_number = topfd_para_ptr_->thread_number_;
+  try {
+    if (thread_number <= 0) {
+      LOG_ERROR("Thread number " << thread_number << " error! The value should be positive.");
+      return false;
+    }
+    int n = static_cast<int>(boost::thread::hardware_concurrency());
+    if(thread_number > n){
+      LOG_ERROR("Thread number " << thread_number << " error! The value is too large. Only " << n << " threads are supported.");
+      return false;
+    }
+  } catch (int e) {
+    LOG_ERROR("Thread number " << thread_number << " should be a number.");
+    return false;
+  }
+  //validate activation method
+  std::string activation = topfd_para_ptr_->activation_;
+  if (activation != "FILE" && activation != "CID" && activation != "ETD"
+    && activation != "HCD" && activation != "UVPD"){
+    //throw InvalidActivation();
+    LOG_ERROR("Activation method should be one out of |FILE|CID|ETD|HCD|UVPD.");
+    return false;
+  }
+
   return true;
 }
 

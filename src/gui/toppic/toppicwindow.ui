@@ -40,9 +40,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>350</y>
+      <y>360</y>
       <width>881</width>
-      <height>301</height>
+      <height>291</height>
      </rect>
     </property>
     <property name="html">
@@ -133,11 +133,11 @@ p, li { white-space: pre-wrap; }
       <x>20</x>
       <y>10</y>
       <width>881</width>
-      <height>321</height>
+      <height>341</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_4">
      <attribute name="title">
@@ -354,13 +354,19 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>60</y>
-        <width>581</width>
+        <width>861</width>
         <height>33</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_21">
        <item>
         <widget class="QCheckBox" name="decoyCheckBox">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="text">
           <string>Decoy database</string>
          </property>
@@ -368,6 +374,12 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <widget class="QCheckBox" name="topfdFeatureCheckBox">
+         <property name="minimumSize">
+          <size>
+           <width>230</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>Missing MS1 feature file</string>
          </property>
@@ -379,7 +391,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>230</y>
+        <y>260</y>
         <width>301</width>
         <height>31</height>
        </rect>
@@ -401,30 +413,11 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget_16">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>60</y>
-        <width>284</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_16">
-       <item>
-        <widget class="QCheckBox" name="lookupTableCheckBox">
-         <property name="text">
-          <string>Lookup table for E-value computation</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QGroupBox" name="groupBox_3">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>110</y>
+        <y>140</y>
         <width>861</width>
         <height>111</height>
        </rect>
@@ -436,7 +429,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>20</y>
+         <y>30</y>
          <width>151</width>
          <height>41</height>
         </rect>
@@ -445,63 +438,11 @@ p, li { white-space: pre-wrap; }
         <string>Spectrum level:</string>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="geometry">
-        <rect>
-         <x>170</x>
-         <y>10</y>
-         <width>191</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QWidget" name="verticalLayoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>171</width>
-          <height>80</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QComboBox" name="cutoffSpectralTypeComboBox">
-           <property name="editable">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>EVALUE</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>FDR</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="cutoffSpectralValueEdit">
-           <property name="text">
-            <string>0.01</string>
-           </property>
-           <property name="readOnly">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
       <widget class="QLabel" name="label_13">
        <property name="geometry">
         <rect>
-         <x>480</x>
-         <y>20</y>
+         <x>440</x>
+         <y>30</y>
          <width>171</width>
          <height>31</height>
         </rect>
@@ -510,64 +451,90 @@ p, li { white-space: pre-wrap; }
         <string>Proteoform level:</string>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_5">
+      <widget class="QWidget" name="verticalLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>650</x>
-         <y>10</y>
-         <width>191</width>
-         <height>91</height>
+         <x>140</x>
+         <y>30</y>
+         <width>171</width>
+         <height>71</height>
         </rect>
        </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>171</width>
-          <height>81</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QComboBox" name="cutoffProteoformTypeComboBox">
-           <property name="editable">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>EVALUE</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>FDR</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="cutoffProteoformValueEdit">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QComboBox" name="cutoffSpectralTypeComboBox">
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <item>
            <property name="text">
-            <string>0.01</string>
+            <string>EVALUE</string>
            </property>
-           <property name="readOnly">
-            <bool>false</bool>
+          </item>
+          <item>
+           <property name="text">
+            <string>FDR</string>
            </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="cutoffSpectralValueEdit">
+          <property name="text">
+           <string>0.01</string>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>570</x>
+         <y>30</y>
+         <width>171</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QComboBox" name="cutoffProteoformTypeComboBox">
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string>EVALUE</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>FDR</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="cutoffProteoformValueEdit">
+          <property name="text">
+           <string>0.01</string>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
      <widget class="QWidget" name="horizontalLayoutWidget_13">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>230</y>
+        <x>450</x>
+        <y>260</y>
         <width>331</width>
         <height>31</height>
        </rect>
@@ -584,6 +551,41 @@ p, li { white-space: pre-wrap; }
         <widget class="QLineEdit" name="formErrorToleranceEdit">
          <property name="text">
           <string>1.2</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_23">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>861</width>
+        <height>33</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_23">
+       <item>
+        <widget class="QCheckBox" name="geneHTMLCheckBox">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Create HTML folder</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="lookupTableCheckBox">
+         <property name="text">
+          <string>Lookup table for E-value computation</string>
          </property>
         </widget>
        </item>
@@ -610,7 +612,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Activation:</string>
+          <string>Fragmentation:</string>
          </property>
         </widget>
        </item>

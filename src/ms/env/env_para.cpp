@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ EnvPara::EnvPara(TopfdParaPtr topfd_para_ptr) {
   output_multiple_mass_ = topfd_para_ptr->output_multiple_mass_;
   prec_deconv_interval_ = topfd_para_ptr->prec_window_; 
   do_final_filtering_ = topfd_para_ptr->do_final_filtering_;
+  use_env_cnn_ = topfd_para_ptr->use_env_cnn_;
 }
 
 void EnvPara::setMinInte(double min_inte, int ms_level) {

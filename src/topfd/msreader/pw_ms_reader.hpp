@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ typedef std::shared_ptr<pwiz::msdata::MSDataFile> MSDataFilePtr;
 class PwMsReader {
  public:
   explicit PwMsReader(const std::string & file_name);
+  explicit PwMsReader(const std::string & file_name, std::string activation);
   int readNext();
   PeakPtrVec getPeakList() {return peak_list_;}
   MsHeaderPtr getHeaderPtr() {return header_ptr_;}
@@ -41,6 +42,7 @@ class PwMsReader {
 
  private:
   std::string file_name_;
+  std::string activation_;
   int input_sp_num_;
   int input_sp_id_;
   int output_sp_id_;

@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -18,11 +18,13 @@
 namespace toppic {
 
 AnnoMassShift::AnnoMassShift(int id, int left_pos, int right_pos, 
+                             double mass_shift,
                              const std::string & anno_str, 
                              AlterTypePtr & mass_shift_type):
     id_(id), 
     left_pos_(left_pos),
     right_pos_(right_pos),
+    mass_shift_(mass_shift),
     anno_str_(anno_str),
     mass_shift_type_(mass_shift_type) {}
 
@@ -34,7 +36,8 @@ void AnnoMassShift::appendXml(XmlDOMDocument* xml_doc, xercesc::DOMElement* pare
   xml_doc->addElement(element, "left_position", str.c_str());
   str = str_util::toString(right_pos_);
   xml_doc->addElement(element, "right_position", str.c_str());
-
+  str = str_util::toString(mass_shift_);
+  xml_doc->addElement(element, "shift", str.c_str());
   xml_doc->addElement(element, "anno", anno_str_.c_str());
 
   std::string type; 

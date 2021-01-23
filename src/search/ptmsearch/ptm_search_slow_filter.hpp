@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ class PtmSearchSlowFilter {
  public:
   PtmSearchSlowFilter(SpectrumSetPtr spectrum_set_ptr,
                       SimplePrsmPtrVec simple_prsm_ptrs,
-                      CompShiftLowMem comp_shift,
                       PtmSearchMngPtr mng_ptr);
   PrsmPtrVec getPrsms(int shift_num, ProteoformTypePtr type_ptr);
 

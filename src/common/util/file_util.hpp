@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ namespace file_util {
 std::string getExecutiveDir(const std::string &argv_0);
 
 std::string getFileSeparator();
+
+std::string basenameFromEntirePath(const std::string &s);
 
 std::string basename(const std::string &s);
 

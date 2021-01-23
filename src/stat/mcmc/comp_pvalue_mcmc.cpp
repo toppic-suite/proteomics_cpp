@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 #include <string>
 #include <algorithm>
 
+#include "common/util/logger.hpp"
 #include "common/base/residue_util.hpp"
 #include "prsm/prsm_algo.hpp"
 
@@ -34,7 +35,7 @@ void getTheoMassVec(const ResiduePtrVec &residues,
   c_theo_masses.clear();
 
   double res_mass = residue_util::compResiduePtrVecMass(residues);
-  double max_mass = res_mass + mass_constant::getWaterMass() - min_mass;
+  //double max_mass = res_mass + mass_constant::getWaterMass() - min_mass;
 
   double prm = 0;
 
@@ -43,14 +44,10 @@ void getTheoMassVec(const ResiduePtrVec &residues,
     double srm = res_mass - prm;
 
     double n_mass = prm + n_ion_type_ptr->getShift();
-    if (min_mass <= n_mass && n_mass <= max_mass) {
-      n_theo_masses.push_back(n_mass);
-    }
+    n_theo_masses.push_back(n_mass);
 
     double c_mass = srm + c_ion_type_ptr->getShift();
-    if (min_mass <= c_mass && c_mass <= max_mass) {
-      c_theo_masses.push_back(c_mass);
-    }
+    c_theo_masses.push_back(c_mass);
   }
 
   std::sort(n_theo_masses.begin(), n_theo_masses.end());
@@ -497,6 +494,9 @@ void CompPValueMCMC::simulateDPR(ResiduePtrVec &residues, long omega, int scr_in
 
       int score2 = getMaxScore(residues2);
 
+      if (score2 >= static_cast<int>(mu_.size())) {
+        LOG_ERROR("Score is larger than array size: " << score2);
+      }
       if (mu_[score2] < omega1) {
         continue;
       }

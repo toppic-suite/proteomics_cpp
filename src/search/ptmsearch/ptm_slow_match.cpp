@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -12,11 +12,12 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 
-
 #include <utility>
 #include <vector>
 
-#include "search/oneptmsearch/diagonal_header_util.hpp"
+#include "ms/factory/prm_ms_factory.hpp"
+#include "ms/factory/prm_ms_util.hpp"
+#include "search/diag/diagonal_header_util.hpp"
 #include "search/ptmsearch/ptm_slow_match.hpp"
 
 namespace toppic {
@@ -24,7 +25,6 @@ namespace toppic {
 PtmSlowMatch::PtmSlowMatch(ProteoformPtr proteo_ptr,
                            SpectrumSetPtr spectrum_set_ptr,
                            ProteoformTypePtr align_type_ptr,
-                           CompShiftLowMem comp_shift,
                            PtmSearchMngPtr mng_ptr) {
   proteo_ptr_ = proteo_ptr;
   deconv_ms_ptr_vec_ = spectrum_set_ptr->getDeconvMsPtrVec();
@@ -32,7 +32,6 @@ PtmSlowMatch::PtmSlowMatch(ProteoformPtr proteo_ptr,
   ms_three_ptr_vec_ = spectrum_set_ptr->getMsThreePtrVec();
   prec_mono_mass_ = spectrum_set_ptr->getPrecMonoMass();
   align_type_ptr_ = align_type_ptr;
-  comp_shift_ = comp_shift;
   mng_ptr_ = mng_ptr;
   init();
 }
@@ -43,14 +42,18 @@ DiagonalHeaderPtrVec PtmSlowMatch::getNTermShiftListCommonHeaders() {
   // n term strict c term nonstrict
   PeakTolerancePtr tole_ptr = mng_ptr_->prsm_para_ptr_->getSpParaPtr()->getPeakTolerancePtr();
   std::vector<std::pair<int, int>> sp_masses_toles
-      = prm_ms::getIntMassErrorList(ms_six_ptr_vec_, tole_ptr, scale, true, false);
+      = prm_ms_util::getIntMassErrorList(ms_six_ptr_vec_, tole_ptr, scale, true, false);
 
-  std::vector<double> best_shifts = comp_shift_.findBestShift(
+  CompShiftLowMemPtr comp_shift_ptr = std::make_shared<CompShiftLowMem>();
+
+  std::vector<double> best_shifts = comp_shift_ptr->findBestShift(
       sp_masses_toles,
       proteo_ptr_->getBpSpecPtr()->getScaledPrmMasses(scale),
       mng_ptr_->n_top_diagonals_,
       mng_ptr_->min_diagonal_gap_,
       scale);
+  // release memory for comp_shift
+  comp_shift_ptr = nullptr;
 
   DiagonalHeaderPtrVec header_ptrs;
   for (size_t i = 0; i < best_shifts.size(); i++) {
@@ -161,7 +164,7 @@ DiagonalHeaderPtrVec PtmSlowMatch::geneNTermShiftHeaders() {
 void PtmSlowMatch::init() {
   DiagonalHeaderPtrVec n_term_shift_header_ptrs = geneNTermShiftHeaders();
   PeakTolerancePtr tole_ptr = mng_ptr_->prsm_para_ptr_->getSpParaPtr()->getPeakTolerancePtr();
-  PrmPeakPtrVec prm_peaks = prm_ms::getPrmPeakPtrs(ms_six_ptr_vec_, tole_ptr);
+  PrmPeakPtrVec prm_peaks = prm_ms_util::getPrmPeakPtrs(ms_six_ptr_vec_, tole_ptr);
   int group_spec_num = ms_six_ptr_vec_.size();
   BasicDiagonalPtrVec diagonal_ptrs = geneDiagonals(n_term_shift_header_ptrs,
                                                     prm_peaks, group_spec_num,

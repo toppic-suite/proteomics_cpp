@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -41,9 +41,43 @@ std::string TopfdPara::getParaStr(const std::string &prefix) {
   output << prefix << std::setw(gap) << std::left 
       << "MS/MS signal/noise ratio: " << "\t" << ms_two_sn_ratio_ << std::endl;
   output << prefix << std::setw(gap) << std::left 
+      << "Thread number: " << "\t" << thread_number_ << std::endl;
+  output << prefix << std::setw(gap) << std::left 
       << "Precursor window size: " << "\t" << prec_window_ << " m/z" << std::endl;
+  if (use_env_cnn_) {
+    output << prefix << std::setw(gap) << std::left 
+        << "Use Env CNN model: " << "\t" << "Yes" << std::endl;
+  }
+  else {
+    output << prefix << std::setw(gap) << std::left 
+        << "Use Env CNN model: " << "\t" << "No" << std::endl;
+  }
+  if (missing_level_one_) {
+    output << prefix << std::setw(gap) << std::left 
+        << "Miss MS1 spectra: " << "\t" << "Yes" << std::endl;
+  }
+  else {
+    output << prefix << std::setw(gap) << std::left 
+        << "Miss MS1 spectra: " << "\t" << "No" << std::endl;
+  }
+  if (gene_html_folder_) {
+    output << prefix << std::setw(gap) << std::left 
+        << "Generate Html files: " << "\t" << "Yes" << std::endl;
+  }
+  else {
+    output << prefix << std::setw(gap) << std::left 
+        << "Generate Html files: " << "\t" << "No" << std::endl;
+  }
+  if (do_final_filtering_) {
+    output << prefix << std::setw(gap) << std::left 
+      << "Do final filtering: " << "\t" << "Yes" << std::endl;
+  }
+  else {
+    output << prefix << std::setw(gap) << std::left 
+      << "Do final filtering: " << "\t" << "No" << std::endl;
+  }
   //output << prefix << std::setw(gap) << std::left 
-  //    << "Do final filtering: " << para_ptr->do_final_filtering_ << std::endl;
+     // << "Do final filtering: " << para_ptr->do_final_filtering_ << std::endl;
   output << prefix << "###################### Parameters ######################" << std::endl;
   return output.str();
 }

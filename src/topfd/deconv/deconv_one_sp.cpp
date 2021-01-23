@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -12,17 +12,20 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 
+#include <algorithm>
+
 #include "common/util/logger.hpp"
 #include "ms/spec/baseline_util.hpp"
-#include "topfd/spec/deconv_data_util.hpp"
 #include "ms/env/match_env_util.hpp"
 #include "ms/env/match_env_refine.hpp"
 #include "ms/env/match_env_filter.hpp"
 #include "ms/env/env_detect.hpp"
 #include "ms/env/env_filter.hpp"
 #include "ms/env/env_assign.hpp"
+#include "topfd/spec/deconv_data_util.hpp"
 #include "topfd/dp/co_table.hpp"
 #include "topfd/dp/dp_a.hpp"
+#include "topfd/envcnn/env_cnn.hpp" 
 #include "topfd/deconv/deconv_one_sp.hpp"
 
 //#include "ms/env/env_rescore.hpp"
@@ -92,7 +95,7 @@ void DeconvOneSp::preprocess() {
   }
 }
 
-MatchEnvPtrVec DeconvOneSp::postprocess(MatchEnvPtrVec  &dp_envs) {
+MatchEnvPtrVec DeconvOneSp::postprocess(MatchEnvPtrVec &dp_envs) {
   // assign intensity
   PeakPtrVec peak_list = data_ptr_->getPeakList();
   match_env_util::assignIntensity(peak_list, dp_envs);
@@ -101,7 +104,13 @@ MatchEnvPtrVec DeconvOneSp::postprocess(MatchEnvPtrVec  &dp_envs) {
     match_env_refine::mzRefine(dp_envs);
   }
 
-  // filtering 
+  // Obtain EnvCNN Prediction Score for MS/MS envelopes
+  if (env_para_ptr_->use_env_cnn_ && ms_level_ != 1){
+    env_cnn::computeEnvScores(dp_envs, peak_list);
+    std::sort(dp_envs.begin(), dp_envs.end(), MatchEnv::cmpScoreDec);
+  }
+
+  // filtering
   if (env_para_ptr_->do_final_filtering_) {
     result_envs_ = MatchEnvFilter::filter(dp_envs, data_ptr_->getMaxMass(),
                                           env_para_ptr_);
@@ -110,7 +119,7 @@ MatchEnvPtrVec DeconvOneSp::postprocess(MatchEnvPtrVec  &dp_envs) {
     result_envs_ = dp_envs;
   }
   if (env_para_ptr_->keep_unused_peaks_) {
-    match_env_util::addLowMassPeak(result_envs_, peak_list, env_para_ptr_->getMzTolerance());
+    match_env_util::addUnusedMasses(result_envs_, peak_list, env_para_ptr_->getMzTolerance());
   }
   // reassign intensity
   match_env_util::assignIntensity(peak_list, result_envs_);

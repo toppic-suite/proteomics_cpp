@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -63,22 +63,18 @@ void Argument::initArguments() {
   arguments_["varModFileName"] = "";
   arguments_["threadNumber"] = "1";
   arguments_["useFeatureFile"] = "true";
-  arguments_["skipList"] = "";
   arguments_["proteoGraphGap"] = "40";
   arguments_["useAsfDiag"] = "false";
   arguments_["varPtmNumber"] = "5";
   arguments_["varPtmNumInGap"] = "5";
+  arguments_["geneHTMLFolder"] = "true";
+  arguments_["wholeProteinOnly"] = "false";
 }
 
 void Argument::outputArguments(std::ostream &output, std::map<std::string, std::string> arguments) {
   output << "********************** Parameters **********************" << std::endl;
   output << std::setw(50) << std::left << "Protein database file: " << "\t" << arguments["oriDatabaseFileName"] << std::endl;
   output << std::setw(50) << std::left << "Spectrum file: " << "\t" << arguments["spectrumFileName"] << std::endl;
-
-  if (arguments["skipList"] != "") {
-    output << std::setw(50) << std::left << "Skip list: " << "\t" << arguments["skipList"] << std::endl;
-  }
-
   output << std::setw(50) << std::left << "Fragmentation method: " << "\t" << arguments["activation"] << std::endl;
   output << std::setw(50) << std::left << "Search type: " << "\t" << arguments["searchType"] << std::endl;
 
@@ -117,6 +113,7 @@ void Argument::outputArguments(std::ostream &output, std::map<std::string, std::
   output << std::setw(50) << std::left << "Maximum number of variable PTMs: " << "\t" << arguments["varPtmNumber"] << std::endl;
   output << std::setw(50) << std::left << "Maximum number of variable PTMs in a graph gap: " << "\t" << arguments["varPtmNumInGap"] << std::endl;
   output << std::setw(50) << std::left << "Maximum number of unexpected modifications: " << "\t" << arguments["ptmNumber"] << std::endl;
+  output << std::setw(50) << std::left << "Report only proteoforms from whole proteins: " << "\t" << arguments["wholeProteinOnly"] << std::endl;
   output << std::setw(50) << std::left << "Executable file directory: " << "\t" << arguments["executiveDir"] << std::endl;
   output << std::setw(50) << std::left << "Start time: " << "\t" << arguments["startTime"] << std::endl;
   if (arguments["endTime"] != "") {
@@ -125,60 +122,9 @@ void Argument::outputArguments(std::ostream &output, std::map<std::string, std::
   output << "********************** Parameters **********************" << std::endl;
 }
 
-std::string Argument::outputCsvArguments(std::map<std::string, std::string> arguments) {
+std::string Argument::outputTsvArguments(std::map<std::string, std::string> arguments) {
   std::stringstream output;
-  std::string comma = ",";
-  output << "********************** Parameters **********************" << std::endl;
-  output << "Protein database file:" << comma << arguments["oriDatabaseFileName"] << std::endl;
-  output << "Spectrum file:" << comma << arguments["spectrumFileName"] << std::endl;
-
-  if (arguments["skipList"] != "") {
-    output << "Skip list:" << comma << arguments["skipList"] << std::endl;
-  }
-
-  output << "Fragmentation method:" << comma << arguments["activation"] << std::endl;
-  output << "Search type:" << comma << arguments["searchType"] << std::endl;
-
-  if (arguments["fixedMod"] == "") {
-    output << "Fixed modifications:" << comma << "None" << std::endl;
-  } 
-  else if (arguments["fixedMod"] == "C57") {
-    output << "Fixed modifications:" << comma << "C57:carbamidomethylation on cysteine" << std::endl;
-  }
-  else if (arguments["fixedMod"] == "C58") {
-    output << "Fixed modifications:" << comma << "C58:carboxymethylation on cysteine" << std::endl;
-  }
-  else {
-    output << "Fixed modifications:" << comma << arguments["fixedMod"] << std::endl;
-  }
-
-  if (arguments["useFeatureFile"] == "true") {
-    output << "Use TopFD feature file:" << comma << "True" << std::endl;
-  }
-  else {
-    output << "Use TopFD feature file:" << comma << "False" << std::endl;
-  }
-
-  output << "Error tolerance for matching masses:," << arguments["massErrorTolerance"] << " ppm" << std::endl;
-  output << "Error tolerance for identifying PrSM clusters:," << arguments["proteoformErrorTolerance"] << " Da" << std::endl;
-  output << "Spectrum-level cutoff type:" << comma << arguments["cutoffSpectralType"] << std::endl;
-  output << "Spectrum-level cutoff value:" << comma << arguments["cutoffSpectralValue"] << std::endl;
-  output << "Proteoform-level cutoff type:" << comma << arguments["cutoffProteoformType"] << std::endl;
-  output << "Proteoform-level cutoff value:" << comma << arguments["cutoffProteoformValue"] << std::endl;
-  output << "Allowed N-terminal forms:" << comma << "\"" << arguments["allowProtMod"] << "\""  << std::endl;
-  output << "Maximum mass shift of modifications:"  << comma << arguments["maxPtmMass"] << " Da" << std::endl;
-  output << "Thread number:" << comma << arguments["threadNumber"] << std::endl;
-  output << "Modification file name:" << comma << arguments["varModFileName"] << std::endl;
-  output << "Gap in proteoform graph:" << comma << arguments["proteoGraphGap"] << std::endl;
-  output << "Maximum number of variable PTMs:" << comma << arguments["varPtmNumber"] << std::endl;
-  output << "Maximum number of variable PTMs in a graph gap:" << comma << arguments["varPtmNumInGap"] << std::endl;
-  output << "Maximum number of unexpected modifications:" << comma << arguments["ptmNumber"] << std::endl;
-  output << "Executable file directory:" << comma << arguments["executiveDir"] << std::endl;
-  output << "Start time:" << comma << arguments["startTime"] << std::endl;
-  if (arguments["endTime"] != "") {
-    output << "End time:" << comma << arguments["endTime"] << std::endl;
-  }
-  output << "********************** Parameters **********************" << std::endl;
+  outputArguments(output, arguments);
   return output.str();
 }
 
@@ -206,7 +152,6 @@ bool Argument::parse(int argc, char* argv[]) {
   std::string var_mod_file_name = "";
   std::string proteo_graph_gap = "";
   std::string thread_number = "";
-  std::string skip_list = "";
   std::string var_ptm_num = "";
   std::string var_ptm_in_gap = "";
   std::string combined_output_name = "";
@@ -240,11 +185,11 @@ bool Argument::parse(int argc, char* argv[]) {
         ("use-asf-diagonal,D", "Use the ASF-DIAGONAL method for protein sequence filtering.")
         ("var-ptm,P", po::value<std::string>(&var_ptm_num) , "<a positive number>. Maximum number of variable PTMs. Default value: 5.")
         ("num-shift,s", po::value<std::string> (&ptm_num), "<0|1|2>. Maximum number of unexpected modifications in a proteoform spectrum-match. Default value: 0.")
+        ("whole-protein-only,w", "Report only proteoforms from whole proteins.")
         ("combined-file-name,c", po::value<std::string>(&combined_output_name) , "Specify a file name for the combined spectrum data file and analysis results.")
-        ("keep-temp-files,k", "Keep temporary files.");
-    
-//("skip-list,l", po::value<std::string>(&skip_list) , "<a text file with its path>. The scans in this file will be skipped.")
-//
+        ("keep-temp-files,k", "Keep temporary files.")
+        ("skip-html-folder,g", "Skip generating an html folder containing TopView and spectrum data for visualization.");
+  
     po::options_description desc("Options");
 
     desc.add_options()
@@ -261,18 +206,19 @@ bool Argument::parse(int argc, char* argv[]) {
         ("proteoform-cutoff-type,T", po::value<std::string> (&cutoff_proteoform_type), "")
         ("proteoform-cutoff-value,V", po::value<std::string> (&cutoff_proteoform_value), "")
         ("filtering-result-number", po::value<std::string>(&filtering_result_num), "Filtering result number. Default value: 20.")
-        ("keep-temp-files,k", "")
         ("full-binary-path,b", "Full binary path.")
         ("mod-file-name,i", po::value<std::string>(&var_mod_file_name), "")
         ("thread-number,u", po::value<std::string> (&thread_number), "")
         ("no-topfd-feature,x", "")
-        ("skip-list,l", po::value<std::string>(&skip_list) , "")
         ("combined-file-name,c", po::value<std::string>(&combined_output_name) , "")
         ("proteo-graph-gap,j", po::value<std::string> (&proteo_graph_gap), "")
         ("var-ptm-in-gap,G", po::value<std::string>(&var_ptm_in_gap) , "")
         ("use-asf-diagonal,D", "")
         ("var-ptm,P", po::value<std::string>(&var_ptm_num) , "")
         ("num-shift,s", po::value<std::string> (&ptm_num), "")
+        ("whole-protein-only,w", "")
+        ("keep-temp-files,k", "")
+        ("skip-html-folder,g", "")
         ("database-file-name", po::value<std::string>(&database_file_name)->required(), "Database file name with its path.")
         ("spectrum-file-name", po::value<std::vector<std::string> >()->multitoken()->required(), "Spectrum file name with its path.");
 
@@ -371,9 +317,6 @@ bool Argument::parse(int argc, char* argv[]) {
       arguments_["cutoffProteoformValue"] = cutoff_proteoform_value;
     }
 
-    if (vm.count("keep-temp-files")) {
-      arguments_["keepTempFiles"] = "true";
-    }
 
     if (vm.count("filtering-result-number")) {
       arguments_["filteringResultNumber"] = filtering_result_num;
@@ -395,10 +338,6 @@ bool Argument::parse(int argc, char* argv[]) {
       arguments_["useFeatureFile"] = "false";
     }
 
-    if (vm.count("skip-list")) {
-      arguments_["skipList"] = skip_list;
-    }
-
     if (vm.count("use-asf-diagonal")) {
       arguments_["useAsfDiag"] = "true";
     }
@@ -413,6 +352,18 @@ bool Argument::parse(int argc, char* argv[]) {
 
     if (vm.count("var-ptm-in-gap")) {
       arguments_["varPtmNumInGap"] = var_ptm_in_gap;
+    }
+
+    if (vm.count("whole-protein-only")) {
+      arguments_["wholeProteinOnly"] = "true";
+    }
+
+    if (vm.count("keep-temp-files")) {
+      arguments_["keepTempFiles"] = "true";
+    }
+
+    if (vm.count("skip-html-folder")) {
+      arguments_["geneHTMLFolder"] = "false";
     }
   }
   catch(std::exception & e) {
@@ -469,13 +420,6 @@ bool Argument::validateArguments() {
   if (!file_util::exists(arguments_["varModFileName"])) {
     LOG_ERROR("Modification file " << arguments_["varModFileName"] << " does not exist!");
     return false;
-  }
-
-  if (arguments_["skipList"] != "") {
-    if (!file_util::exists(arguments_["skipList"])) {
-      LOG_ERROR("Skip list " << arguments_["skipList"] << " does not exist!");
-      return false;
-    }
   }
 
   std::string activation = arguments_["activation"];

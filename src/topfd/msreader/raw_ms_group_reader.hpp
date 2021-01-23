@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -12,7 +12,6 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 
-
 #ifndef TOPPIC_TOPFD_MSREADER_RAW_MS_GROUP_READER_HPP_
 #define TOPPIC_TOPFD_MSREADER_RAW_MS_GROUP_READER_HPP_
 
@@ -24,7 +23,7 @@ namespace toppic {
 
 class RawMsGroupReader {
  public:
-  RawMsGroupReader(const std::string & file_name, bool missing_level_one, 
+  RawMsGroupReader(const std::string & file_name, bool missing_level_one, std::string activation, 
                    int fraction_id);
 
   RawMsPtr readNextRawMs();
@@ -45,6 +44,7 @@ class RawMsGroupReader {
   bool do_refine_prec_mass_ = true;
   bool missing_level_one_ = false;
 
+  std::string activation_;
 };
 
 typedef std::shared_ptr<RawMsGroupReader> RawMsGroupReaderPtr;

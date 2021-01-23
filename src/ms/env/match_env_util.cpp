@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ PeakPtrVec  rmAnnoPeak(PeakPtrVec &ms, MatchEnvPtrVec &envs) {
   return new_list;
 }
 
-MatchEnvPtrVec addLowMassPeak(MatchEnvPtrVec &envs, PeakPtrVec &ms, double tolerance) {
+MatchEnvPtrVec addUnusedMasses(MatchEnvPtrVec &envs, PeakPtrVec &ms, double tolerance) {
   std::vector<bool> is_uses(ms.size(), false);
   for (size_t i = 0; i < envs.size(); i++) {
     MatchEnvPtr env = envs[i];
@@ -111,15 +111,15 @@ MatchEnvPtrVec addLowMassPeak(MatchEnvPtrVec &envs, PeakPtrVec &ms, double toler
     }
   }
 
-  MatchEnvPtrVec low_mass_envs;
+  MatchEnvPtrVec unused_mass_envs;
   for (size_t i = 0; i < is_uses.size(); i++) {
     if (!is_uses[i]) {
-      low_mass_envs.push_back(getNewMatchEnv(ms, i, tolerance));
+      unused_mass_envs.push_back(getNewMatchEnv(ms, i, tolerance));
     }
   }
 
   MatchEnvPtrVec result;
-  result.insert(std::end(result), std::begin(low_mass_envs), std::end(low_mass_envs));
+  result.insert(std::end(result), std::begin(unused_mass_envs), std::end(unused_mass_envs));
   result.insert(std::end(result), std::begin(envs), std::end(envs));
   std::sort(result.begin(), result.end(), MatchEnv::cmpScoreDec);
   return result;
@@ -205,6 +205,7 @@ DeconvMsPtr getDeconvMsPtr(MsHeaderPtr header_ptr, MatchEnvPtrVec &envs) {
     double inte = theo_env->compIntensitySum();
     int charge = theo_env->getCharge();
     double score = envs[i]->getScore();
+
     DeconvPeakPtr peak_ptr = std::make_shared<DeconvPeak>(sp_id, i, pos, inte, charge, score);
     peak_list.push_back(peak_ptr);
   }

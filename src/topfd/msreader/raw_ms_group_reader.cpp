@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -22,8 +22,9 @@ namespace toppic {
 
 RawMsGroupReader::RawMsGroupReader(const std::string & file_name, 
                                    bool missing_level_one,
+                                   std::string activation,
                                    int fraction_id) {
-  reader_ptr_ = std::make_shared<PwMsReader>(file_name);
+  reader_ptr_ = std::make_shared<PwMsReader>(file_name, activation);
   missing_level_one_ = missing_level_one;
   fraction_id_ = fraction_id;
   if (!missing_level_one_) {
@@ -120,6 +121,7 @@ void RawMsGroupReader::obtainPrecEnvs(RawMsGroupPtr ms_group_ptr,
                                       double prec_win_size, int max_charge) {
   RawMsPtr ms_one_ptr = ms_group_ptr->getMsOnePtr();
   RawMsPtrVec ms_two_ptr_vec = ms_group_ptr->getMsTwoPtrVec();
+
   for (size_t i = 0; i < ms_two_ptr_vec.size(); i++) {
     RawMsPtr ms_two_ptr = ms_two_ptr_vec[i];
     MatchEnvPtr match_env_ptr = refinePrecChrg(ms_one_ptr, ms_two_ptr, prec_win_size, max_charge);

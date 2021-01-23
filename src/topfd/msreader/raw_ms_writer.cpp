@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -38,11 +38,22 @@ void write(std::string &file_name, RawMsPtr ms_ptr, MatchEnvPtrVec &envs) {
 
   MsHeaderPtr header_ptr = ms_ptr->getMsHeaderPtr();
   int ms_level = header_ptr->getMsLevel();
+  int scan_id = header_ptr->getId();
   int scan_num = header_ptr->getFirstScanNum();
   double retention_time = header_ptr->getRetentionTime();
+  doc.AddMember("id", scan_id, allocator);
   doc.AddMember("scan", scan_num, allocator);
   doc.AddMember("retention_time", retention_time, allocator);
-  
+
+  if (header_ptr->getMsLevel() == 2) {
+    std::string n_ion_type = header_ptr->getActivationPtr()->getNIonTypePtr()->getName();
+    std::string c_ion_type = header_ptr->getActivationPtr()->getCIonTypePtr()->getName();
+    rapidjson::Value n_ion(n_ion_type.c_str(), allocator);
+    doc.AddMember("n_ion_type", n_ion, allocator);
+    rapidjson::Value c_ion(c_ion_type.c_str(), allocator);
+    doc.AddMember("c_ion_type", c_ion, allocator);
+  }
+
   // create a rapidjson array type with similar syntax to std::vector
   rapidjson::Value peaks(rapidjson::kArrayType);
 
@@ -65,6 +76,7 @@ void write(std::string &file_name, RawMsPtr ms_ptr, MatchEnvPtrVec &envs) {
   for (size_t i = 0; i < envs.size(); i++) {
     rapidjson::Value env(rapidjson::kObjectType);
     EnvelopePtr theo_env = envs[i]->getTheoEnvPtr();
+    env.AddMember("id", i, allocator);
     env.AddMember("mono_mass", theo_env->getMonoNeutralMass(), allocator);
     env.AddMember("charge", theo_env->getCharge(), allocator);
 

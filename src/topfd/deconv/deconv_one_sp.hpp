@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
 #ifndef TOPPIC_TOPFD_DECONV_ONE_SP_HPP_
 #define TOPPIC_TOPFD_DECONV_ONE_SP_HPP_
 
-#include "topfd/spec/deconv_data.hpp"
 #include "ms/env/env_para.hpp"
 #include "ms/env/match_env.hpp"
+#include "topfd/spec/deconv_data.hpp"
 #include "topfd/dp/dp_para.hpp"
 
 namespace toppic {
 
 class DeconvOneSp {
  public:
-  explicit DeconvOneSp(EnvParaPtr env_para_ptr, DpParaPtr dp_para_ptr): 
-      env_para_ptr_(env_para_ptr), dp_para_ptr_(dp_para_ptr) {}
-
+  explicit DeconvOneSp(EnvParaPtr env_para_ptr, DpParaPtr dp_para_ptr):
+            env_para_ptr_(env_para_ptr), dp_para_ptr_(dp_para_ptr) {}
+  
   void setData(PeakPtrVec &peak_list);
 
   void setMsLevel(int level) {ms_level_ = level;}
@@ -40,6 +40,9 @@ class DeconvOneSp {
   void run();
 
   MatchEnvPtrVec postprocess(MatchEnvPtrVec  &dp_envs);
+
+  EnvParaPtr getEnvParaPtr(){return env_para_ptr_;}
+  DpParaPtr getDpParaPtr(){return dp_para_ptr_;}
 
  private:
   EnvParaPtr env_para_ptr_;

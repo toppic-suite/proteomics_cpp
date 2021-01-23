@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -39,7 +39,20 @@ void Ptm::appendAbbrNameToXml(XmlDOMDocument* xml_doc, XmlDOMElement* parent) {
   std::string element_name = Ptm::getXmlElementName();
   XmlDOMElement* element = xml_doc->createElement(element_name.c_str());
   xml_doc->addElement(element, "abbreviation", abbr_name_.c_str());
-  xml_doc->addElement(element, "unimod", str_util::toString(unimod_id_).c_str());
+  std::string str = str_util::toString(unimod_id_);
+  xml_doc->addElement(element, "unimod", str.c_str());
+  parent->appendChild(element);
+}
+
+
+void Ptm::appendAbbrNameMassToXml(XmlDOMDocument* xml_doc, XmlDOMElement* parent) {
+  std::string element_name = Ptm::getXmlElementName();
+  XmlDOMElement* element = xml_doc->createElement(element_name.c_str());
+  xml_doc->addElement(element, "abbreviation", abbr_name_.c_str());
+  std::string str = str_util::toString(unimod_id_);
+  xml_doc->addElement(element, "unimod", str.c_str());
+  str = str_util::toString(mono_mass_);
+  xml_doc->addElement(element, "mono_mass", str.c_str());
   parent->appendChild(element);
 }
 

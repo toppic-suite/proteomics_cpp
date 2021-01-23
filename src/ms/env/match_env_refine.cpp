@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -114,6 +114,9 @@ void compDistWithNorm(const std::vector<double>& real,
   best_dist = std::numeric_limits<double>::infinity();
   best_ratio = -1;
   for (size_t i = 0; i < real.size(); i++) {
+    if (theo[i] == 0.0) {
+      continue;
+    }
     double ratio = real[i] / theo[i];
     if (ratio <= 0) {
       continue;
@@ -127,6 +130,9 @@ void compDistWithNorm(const std::vector<double>& real,
         best_ratio = cur_ratio;
       }
     }
+  }
+  if (std::isnan(best_ratio)) {
+    LOG_ERROR("The best ratio is not a number!");
   }
 }
 

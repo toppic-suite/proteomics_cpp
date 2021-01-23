@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -36,11 +36,15 @@ class TopfdPara {
   double ms_two_sn_ratio_ = 1.0;
   double prec_window_ = 3.0;
   bool keep_unused_peaks_ = false;
+  bool use_env_cnn_ = false;
   bool output_multiple_mass_ = false;
   bool do_final_filtering_ = true;
   bool output_match_env_ = false;
-  bool output_json_files_ = true;
+  //bool output_json_files_ = true;
   bool merge_files_ = false;
+  int  thread_number_ = 1;
+  std::string activation_ = "FILE";
+  bool gene_html_folder_ = true;
   std::string merged_file_name_ = "";
 };
 

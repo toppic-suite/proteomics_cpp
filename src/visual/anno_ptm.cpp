@@ -1,4 +1,4 @@
-//Copyright (c) 2014 - 2019, The Trustees of Indiana University.
+//Copyright (c) 2014 - 2020, The Trustees of Indiana University.
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ void AnnoPtm::appendXml(XmlDOMDocument* xml_doc, xercesc::DOMElement* parent) {
   xercesc::DOMElement* element = xml_doc->createElement("ptm");
   std::string str = type_ptr_->getName();
   xml_doc->addElement(element, "ptm_type", str.c_str());
-  ptm_ptr_->appendAbbrNameToXml(xml_doc, element);
+  ptm_ptr_->appendAbbrNameMassToXml(xml_doc, element);
 
   for (size_t i = 0; i < occurences_.size(); i++) {
     occurences_[i]->appendXml(xml_doc, element);
