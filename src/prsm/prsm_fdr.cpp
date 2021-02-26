@@ -85,6 +85,7 @@ void PrsmFdr::process(){
 
   std::string output_file_name = base_name + "." + output_file_ext_;
   PrsmXmlWriter writer(output_file_name);
+  target_ptrs.insert(target_ptrs.end(), decoy_ptrs.begin(), decoy_ptrs.end());
   std::sort(target_ptrs.begin(), target_ptrs.end(), PrsmStr::cmpSpectrumIdInc);
   writer.writeVector(target_ptrs);
   writer.close();
