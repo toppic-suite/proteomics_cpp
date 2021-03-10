@@ -293,8 +293,12 @@ function json2MassShifts(prsm) {
     for (let i = 0; i < dataMassShifts.length; i++) {
       let dataShift = dataMassShifts[i];
 			if(dataShift.shift_type == "unexpected" && dataShift.right_position != "0") {
-        let massShift = new MassShift(dataShift.left_position, dataShift.right_position, dataShift.shift, dataShift.shift_type, dataShift.shift);
-				massShifts.push(massShift) ;
+        let shift = {};
+        shift.anno = dataShift.anno; 
+        shift.shift = dataShift.shift;
+        shift.leftPos = dataShift.left_position; 
+        shift.rightPos = dataShift.right_position;
+				massShifts.push(shift) ;
 			}
       else if (dataShift.right_position == 0) {
         console.log("Mass shift right position is 0!", dataShift);

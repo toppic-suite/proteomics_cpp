@@ -277,7 +277,9 @@ class SeqOfExecution
 			 * Get total mass and wite to HTML
 			 */
 			//let totalMass = getTotalSeqMass(sequence,completeShiftList);
-      		let totalMass = proteoformObj.proteoformMass; 
+
+			let totalMass = proteoformObj.proteoformMass; 
+
 			//console.log("completeShiftList", completeShiftList)
 			setTotalSeqMass(totalMass);
 			//Set Mass Difference, precursorMass is a global variable form spectrum.html

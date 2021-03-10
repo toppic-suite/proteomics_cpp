@@ -48,8 +48,12 @@ class Proteoform {
   compFixedPtmMasses(firstPos) {
     this.fixedPtmMasses = new Array(this.sequence.length).fill(0);
     this.fixedPtms.forEach((element) => {
-      let pos = element.getLeftPos();
-      this.fixedPtmMasses[pos-firstPos] = parseFloat(element.getShift());
+     //console.log(element);
+      for (let i = 0; i < element.posList.length; i++) {
+        let pos = element.posList[i].leftPos; 
+        //console.log(pos);
+        this.fixedPtmMasses[pos-firstPos] = parseFloat(element.monoMass);
+      }
     });
     //console.log(this.fixedPtmMasses);
   }
@@ -78,8 +82,9 @@ class Proteoform {
     this.unexpectedPrefixMasses = new Array(this.sequence.length).fill(0);
     this.unexpectedSuffixMasses = new Array(this.sequence.length).fill(0);
     this.unexpectedMassShifts.forEach((element) => {
-      this.unexpectedPrefixMasses[element.getLeftPos() - firstPos] += parseFloat(element.getShift());
-      this.unexpectedSuffixMasses[element.getRightPos() - 1 - firstPos] += parseFloat(element.getShift());
+      //console.log(element);
+      this.unexpectedPrefixMasses[element.leftPos - firstPos] += parseFloat(element.shift);
+      this.unexpectedSuffixMasses[element.rightPos - 1 - firstPos] += parseFloat(element.shift);
     });
     //console.log(this.unexpectedMasses);
   }

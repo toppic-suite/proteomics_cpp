@@ -99,7 +99,8 @@ function parseSequenceMassShift(seq){
 				 * remove 1 as the data starts from 0 and length starts from 1
 				 */
 				let tempPosition = position - 1;
-
+				//Initially set the bg_color to null
+				let shiftobj = {leftPos:tempPosition, rightPos:tempPosition + 1, shift:mass, anno:mass, label:mass, bg_color:null};
 				/**
 				 * when the split occur at the end we get an extra "" in 
 				 * the list. This is to check if the mass is numeric.
